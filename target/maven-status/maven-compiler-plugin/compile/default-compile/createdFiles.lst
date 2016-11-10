@@ -1,0 +1,9 @@
+config/Configuration.class
+googleAPI/Util.class
+googleAPI/Point.class
+googleAPI/Test.class
+amazon/HSBCSpeechlet.class
+amazon/HSBCManager.class
+googleAPI/Place.class
+googleAPI/APIConnector.class
+amazon/HSBCSpeechletRequestStreamHandler.class

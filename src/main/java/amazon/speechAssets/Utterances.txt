@@ -1,0 +1,7 @@
+AddressNearestPlaceIntent find me an agency near {City}
+AddressNearestPlaceIntent give me an agency near {City}
+AddressNearestPlaceIntent is there an agency near {City}
+AddressNearestPlaceIntent give the address of an agency near {City}
+AddressNearestPlaceIntent find the address of an agency near {City}
+AddressNearestPlaceIntent find me an agency in {City}
+AddressNearestPlaceIntent give me an agency in {City}

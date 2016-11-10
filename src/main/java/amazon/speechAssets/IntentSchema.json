@@ -1,0 +1,13 @@
+{
+  "intents": [
+    {
+      "intent": "AddressNearestPlaceIntent",
+      "slots": [
+        {
+          "name": "City",
+          "type": "AMAZON.EUROPE_CITY"
+        }
+      ]
+    }
+  ]
+}
