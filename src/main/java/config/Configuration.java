@@ -29,14 +29,14 @@ public class Configuration {
 
 
     public static String getAPIKey() throws IOException {
-        System.out.println("API_KEY = "+ prop.getProperty("API_KEY"));
-        return  prop.getProperty("API_KEY");
+        System.out.println("API_KEY = "+ prop.getProperty("apikey"));
+        return  prop.getProperty("apikey");
     }
 
     public static String getAPPID() throws IOException {
 
-        System.out.println("APP_ID = "+ prop.getProperty("patate"));
-        return  prop.getProperty("patate");
+        System.out.println("APP_ID = "+ prop.getProperty("appid"));
+        return  prop.getProperty("appid");
 
     }
 }
