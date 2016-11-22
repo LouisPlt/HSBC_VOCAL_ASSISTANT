@@ -15,8 +15,7 @@ public  class Util {
 	public static Place findNearestPlace(Point location, ArrayList<Place> places) throws JSONException {
 		Place closestPlace = places.get(0);
 		double minDistance = distance(location, closestPlace.getCoordinate());
-
-		
+	
 		for (Place place : places){
 			double distance = distance(location, place.getCoordinate());
 			if(distance < minDistance){

@@ -6,13 +6,11 @@ import org.json.JSONObject;
 public class Place {
 	
 	private Point coordinate;
-
     private String vicinity;
-
     private String placeId;
     private String name;
+    
 	public Place(JSONObject place) throws JSONException {
-
 		this.placeId = place.getString("place_id");
         this.name = place.getString("name");
         this.coordinate = new Point(place);
@@ -30,7 +28,6 @@ public class Place {
     public String getPlaceId() {
         return placeId;
     }
-
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;

@@ -16,8 +16,6 @@ public class Point {
 
 		this.lat = Double.parseDouble(coordinates.getString("lat"));
 		this.lng = Double.parseDouble(coordinates.getString("lng"));
-
-
 	}
 
 	public double getLat() {

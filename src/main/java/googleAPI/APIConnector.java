@@ -24,15 +24,13 @@ public final class APIConnector {
     //private final static int DEFAULT_RADIUS = 1000;
 
     public static void main(String[] args) throws IOException, JSONException {
-
         APIConnector APIConnector = new APIConnector();
         System.out.println(APIConnector.getPlaces(getCoordinatesFromAddress("Paris"), 1000));
-
     }
 
 
     public static JSONObject getPlaceDetails(String placeId) throws IOException, JSONException {
-        String urlString =  "https://maps.googleapis.com/maps/api/place/details/json?placeid="+placeId+"&key="+API_KEY;
+        String urlString =  "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId + "&key=" + API_KEY;
         URL url = new URL(urlString);
         return getJsonFromUrl(url);
     }
@@ -61,13 +59,9 @@ public final class APIConnector {
 
 
     public static Point getCoordinatesFromAddress(String address) throws JSONException, IOException {
-
         String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key="+API_KEY;
-
         URL url = new URL(urlString);
-
         JSONObject res = getJsonFromUrl(url).getJSONArray("results").getJSONObject(0);
-
         return new Point(res);
     }
 
@@ -85,11 +79,11 @@ public final class APIConnector {
         if (! obj.getString("status").equals("OK")){
             return null;
         }
-        else
+        else {
             return obj;
+        }
+
     }
-
-
 }
 
 
