@@ -1,4 +1,4 @@
-package googleAPI;
+package googleApi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,12 +9,14 @@ public class Place {
     private String vicinity;
     private String placeId;
     private String name;
+    private String phoneNumber;
     
 	public Place(JSONObject place) throws JSONException {
 		this.placeId = place.getString("place_id");
         this.name = place.getString("name");
         this.coordinate = new Point(place);
 		this.vicinity = place.getString("vicinity");
+		this.phoneNumber = place.getString("international_phone_number");
 	}
 
 	public Point getCoordinate() {
@@ -47,5 +49,13 @@ public class Place {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getPhoneNumber() {
+    	return phoneNumber;
+    }
+    
+    public void setPhoneNumber(String phoneNumber){
+    	this.phoneNumber = phoneNumber;
     }
 }

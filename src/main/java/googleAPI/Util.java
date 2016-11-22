@@ -1,9 +1,11 @@
-package googleAPI;
+package googleApi;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public  class Util {
+public class Util {
+	
+	public static int DEFAULT_RADIUS = 1000;
 	
 	// d(a,b) = sqrt((xb - xa)^2 + (yb - ya)^2)
 	public static double distance(Point p1, Point p2){

@@ -1,4 +1,4 @@
-package googleAPI;
+package googleApi;
 
 import config.Configuration;
 import org.json.JSONArray;
@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 
 public final class APIConnector {
-    private static String  API_KEY;
+    private static String API_KEY;
 
     static {
         try {
@@ -21,11 +21,9 @@ public final class APIConnector {
             e.printStackTrace();
         }
     }
-    //private final static int DEFAULT_RADIUS = 1000;
 
     public static void main(String[] args) throws IOException, JSONException {
-        APIConnector APIConnector = new APIConnector();
-        System.out.println(APIConnector.getPlaces(getCoordinatesFromAddress("Paris"), 1000));
+        System.out.println(APIConnector.getPlaces(getCoordinatesFromAddress("Paris"), Util.DEFAULT_RADIUS));
     }
 
 
@@ -37,7 +35,7 @@ public final class APIConnector {
     
 
     public static ArrayList<Place> getPlaces(Point coordinates, int radius) throws IOException, JSONException {
-        ArrayList<Place> arrayOfPlaces = new ArrayList();
+        ArrayList<Place> arrayOfPlaces = new ArrayList<Place>();
         String urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
                                                                                          + "?location="+  coordinates
                                                                                          + "&radius="+    radius
@@ -59,15 +57,15 @@ public final class APIConnector {
 
 
     public static Point getCoordinatesFromAddress(String address) throws JSONException, IOException {
-        String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key="+API_KEY;
+        String urlString = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + API_KEY;
         URL url = new URL(urlString);
-        JSONObject res = getJsonFromUrl(url).getJSONArray("results").getJSONObject(0);
+        JSONObject res = getJsonFromUrl(url).getJSONArray("results").getJSONObject(0); // TODO : check null??
         return new Point(res);
     }
 
     public static JSONObject getJsonFromUrl(URL url) throws IOException, JSONException {
         // read from the URL
-        System.out.println("Nouvelle requête à "+ url);
+        System.out.println("Nouvelle requete � "+ url);
         Scanner scan = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext())

@@ -1,4 +1,4 @@
-package googleAPI;
+package googleApi;
 
 import org.json.JSONException;
 import org.json.JSONObject;

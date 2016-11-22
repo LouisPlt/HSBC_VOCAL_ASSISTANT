@@ -41,7 +41,7 @@ public class DatabaseConnector {
         }
 
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://"+host+":"+port+"/"+db+"?sslmode=require",user, password);
+            connection = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/" + db + "?sslmode=require", user, password);
 
         } catch (SQLException e) {
             e.printStackTrace();

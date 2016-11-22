@@ -5,6 +5,7 @@ import com.amazon.speech.speechlet.*;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import googleApi.Place;
 
 import java.io.IOException;
 
@@ -38,7 +39,13 @@ public class HSBCSpeechlet implements Speechlet {
         switch (intent.getName()){
             case "AddressNearestPlaceIntent" :
                 try {
-                    return hSBCManager.getAddressNearestPlaceIntentResponse(request, session);
+                    return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new AdressOfNearestAgency());
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            case "PhoneNumberNearestPlaceIntent" :
+                try {
+                    return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new NumOfNearestAgency());
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -53,6 +60,21 @@ public class HSBCSpeechlet implements Speechlet {
 
     private void initializeComponents() {
         hSBCManager = new HSBCManager();
-
     }
+}
+
+class AdressOfNearestAgency implements Answer {
+	
+	@Override
+	public String getTextResponse(Place place) {
+		return "There is one agency at " + place.getVicinity();
+	}	
+}
+
+class NumOfNearestAgency implements Answer {
+	
+	@Override
+	public String getTextResponse(Place place) {
+		return "The numero of the closest agency is " + place.getPhoneNumber();
+	}	
 }
