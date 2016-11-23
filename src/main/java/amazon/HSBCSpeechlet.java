@@ -36,22 +36,21 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
 
         Intent intent = request.getIntent();
-        switch (intent.getName()){
-            case "AddressNearestPlaceIntent" :
-                try {
-                    return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new AdressOfNearestAgency());
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            case "PhoneNumberNearestPlaceIntent" :
-                try {
+        try {
+            switch (intent.getName()) {
+                case "AddressNearestPlaceIntent":
+                    return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new AddressOfNearestAgency());
+                case "PhoneNumberNearestPlaceIntent":
                     return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new NumOfNearestAgency());
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            default:
-                return hSBCManager.nothingFoundResponse();
+                default:
+                    return hSBCManager.nothingFoundResponse();
+            }
+        } catch (IOException | JSONException e){
+            e.printStackTrace();
+            return hSBCManager.nothingFoundResponse();
         }
+
+
     }
 
     public void onSessionEnded(SessionEndedRequest request, Session session) throws SpeechletException {
@@ -63,18 +62,19 @@ public class HSBCSpeechlet implements Speechlet {
     }
 }
 
-class AdressOfNearestAgency implements Answer {
-	
+class AddressOfNearestAgency implements Answer {
+
 	@Override
 	public String getTextResponse(Place place) {
 		return "There is one agency at " + place.getVicinity();
-	}	
+	}
 }
 
 class NumOfNearestAgency implements Answer {
-	
+
 	@Override
 	public String getTextResponse(Place place) {
-		return "The numero of the closest agency is " + place.getPhoneNumber();
-	}	
+        place.findDetails();
+		return "The phone number of the closest agency is " + place.getPhoneNumber();
+	}
 }

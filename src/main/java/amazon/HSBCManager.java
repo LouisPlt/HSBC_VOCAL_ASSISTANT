@@ -18,6 +18,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static googleApi.APIConnector.getCoordinatesFromAddress;
+
 /**
  * Created by louis on 05/11/16.
  */
@@ -41,7 +43,7 @@ public class HSBCManager {
         Intent intent = request.getIntent();
 
         // TODO : To be replaced with the location of alexa
-        Point coordinates = new point(0,0);
+        Point coordinates = getCoordinatesFromAddress("Paris");
 
         // Get the list of all places near the coordinates
         // While there is no result new request with a larger radius is send

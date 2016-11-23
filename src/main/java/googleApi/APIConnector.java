@@ -24,6 +24,7 @@ public final class APIConnector {
 
     public static void main(String[] args) throws IOException, JSONException {
         System.out.println(APIConnector.getPlaces(getCoordinatesFromAddress("Paris"), Util.DEFAULT_RADIUS));
+
     }
 
 
@@ -65,7 +66,7 @@ public final class APIConnector {
 
     public static JSONObject getJsonFromUrl(URL url) throws IOException, JSONException {
         // read from the URL
-        System.out.println("Nouvelle requete à "+ url);
+        System.out.println("Nouvelle requete ? "+ url);
         Scanner scan = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext())
