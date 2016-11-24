@@ -1,10 +1,10 @@
 {
   "intents": [
     {
-      "intent": "AddressNearestPlaceIntent",
+      "intent": "AddressNearestPlaceIntent"
     },
     {
-      "intent": "PhoneNumberNearestPlaceIntent",
+      "intent": "PhoneNumberNearestPlaceIntent"
     }
   ]
 }

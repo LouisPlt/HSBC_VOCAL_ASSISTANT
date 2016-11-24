@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -15,16 +16,25 @@ public final class APIConnector {
     private static String API_KEY;
 
     static {
-        try {
-            API_KEY = Configuration.getAPIKey();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	API_KEY = "AIzaSyCepAcRLqM_yr_o4f7bnXaV5zkErc3XF6o";
+//        try {
+//            API_KEY = Configuration.getAPIKey();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static void main(String[] args) throws IOException, JSONException {
-        System.out.println(APIConnector.getPlaces(getCoordinatesFromAddress("Paris"), Util.DEFAULT_RADIUS));
-
+        List<Place> places = APIConnector.getPlaces(getCoordinatesFromAddress("Paris"), Util.DEFAULT_RADIUS);
+        Place place = places.get(0);
+    	place.findPhoneNumber();
+    	place.findOpeningHours();
+    	System.out.println(place.getCoordinate());
+    	System.out.println(place.getPhoneNumber());
+    	for(String[] hours : place.getOpeningHours()){
+    		System.out.println(hours[0] + ": " + hours [1] + " " + hours [2]);
+    	}
+        
     }
 
 
@@ -66,7 +76,7 @@ public final class APIConnector {
 
     public static JSONObject getJsonFromUrl(URL url) throws IOException, JSONException {
         // read from the URL
-        System.out.println("Nouvelle requete ? "+ url);
+        //System.out.println("Nouvelle requete ? "+ url);
         Scanner scan = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext())

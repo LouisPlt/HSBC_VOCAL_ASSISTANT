@@ -63,7 +63,6 @@ public class HSBCSpeechlet implements Speechlet {
 }
 
 class AddressOfNearestAgency implements Answer {
-
 	@Override
 	public String getTextResponse(Place place) {
 		return "There is one agency at " + place.getVicinity();
@@ -71,10 +70,9 @@ class AddressOfNearestAgency implements Answer {
 }
 
 class NumOfNearestAgency implements Answer {
-
 	@Override
 	public String getTextResponse(Place place) {
-        place.findDetails();
+        place.findPhoneNumber();
 		return "The phone number of the closest agency is " + place.getPhoneNumber();
 	}
 }

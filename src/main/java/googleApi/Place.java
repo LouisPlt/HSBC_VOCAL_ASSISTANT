@@ -14,40 +14,56 @@ public class Place {
     private String placeId;
     private String name;
     private String phoneNumber;
-
     private ArrayList<String []> openingHours  = new ArrayList<>();
 
 	public Place(JSONObject place) throws JSONException {
-        System.out.println(place);
         this.placeId        = place.getString("place_id");
         this.name           = place.getString("name");
         this.coordinate     = new Point(place);
 		this.vicinity       = place.getString("vicinity");
 	}
 
-	public void findDetails(){
-        try {
-            JSONObject details  = APIConnector.getPlaceDetails(placeId);
-
-            this.phoneNumber = details.getString("formatted_phone_number");
-            JSONArray periodTab = details.getJSONObject("opening_hours").getJSONArray("periods");
-
-            for (int i = 0 ; i < periodTab.length(); i++) {
-                JSONObject open     = periodTab.getJSONObject(i).getJSONObject("open");
-                JSONObject close    = periodTab.getJSONObject(i).getJSONObject("close");
-                String day = Util.DAYS[open.getInt("day")-1];
-                String hours[] = {day, open.getString("time"),close.getString("time")};
-                openingHours.add(hours);
-
-                periodTab.getJSONObject(i);
+	public void findPhoneNumber(){
+        try {    
+            JSONObject details = findDetails();
+            if(details != null){
+                phoneNumber = details.getString("formatted_phone_number");
             }
-
-
-        } catch (IOException | JSONException e ) {
+        } catch (JSONException e ) {
             e.printStackTrace();
         }
     }
-
+	
+	public void findOpeningHours(){
+        try {    
+            JSONObject details = findDetails();
+            if(details != null){
+                JSONArray periodTab = details.getJSONObject("opening_hours").getJSONArray("periods");
+                
+                for (int i = 0 ; i < periodTab.length(); i++) {
+                    JSONObject open     = periodTab.getJSONObject(i).getJSONObject("open");
+                    JSONObject close    = periodTab.getJSONObject(i).getJSONObject("close");
+                    String day = Util.DAYS[open.getInt("day")-1];
+                    String hours[] = {day, open.getString("time"),close.getString("time")};
+                    openingHours.add(hours);
+                    periodTab.getJSONObject(i);
+                }
+            }
+        } catch (JSONException e ) {
+            e.printStackTrace();
+        }
+    }
+	
+	public JSONObject findDetails(){
+        try {
+            JSONObject details  = APIConnector.getPlaceDetails(placeId);     
+            return details.getJSONObject("result");
+        } catch (IOException | JSONException e ) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+            
 
     public ArrayList<String[]> getOpeningHours() {
         return openingHours;
