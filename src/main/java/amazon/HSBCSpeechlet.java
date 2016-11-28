@@ -1,10 +1,17 @@
 package amazon;
 
+import Answer.AddressOfNearestAgency;
+import Answer.Answer;
+import Answer.NumOfNearestAgency;
+import Answer.OpeningHoursOfNearestAgency;
+
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
+
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import googleApi.Place;
 
 import java.io.IOException;
@@ -42,6 +49,8 @@ public class HSBCSpeechlet implements Speechlet {
                     return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new AddressOfNearestAgency());
                 case "PhoneNumberNearestPlaceIntent":
                     return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new NumOfNearestAgency());
+                case "OpeningHoursNearestPlaceIntent":
+                	return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new OpeningHoursOfNearestAgency());
                 default:
                     return hSBCManager.nothingFoundResponse();
             }
@@ -60,19 +69,4 @@ public class HSBCSpeechlet implements Speechlet {
     private void initializeComponents() {
         hSBCManager = new HSBCManager();
     }
-}
-
-class AddressOfNearestAgency implements Answer {
-	@Override
-	public String getTextResponse(Place place) {
-		return "There is one agency at " + place.getVicinity();
-	}
-}
-
-class NumOfNearestAgency implements Answer {
-	@Override
-	public String getTextResponse(Place place) {
-        place.findPhoneNumber();
-		return "The phone number of the closest agency is " + place.getPhoneNumber();
-	}
 }

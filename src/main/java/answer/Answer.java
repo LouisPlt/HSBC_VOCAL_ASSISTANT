@@ -1,4 +1,5 @@
-package amazon;
+package Answer;
+
 import googleApi.Place;
 
 // TODO : find a proper name

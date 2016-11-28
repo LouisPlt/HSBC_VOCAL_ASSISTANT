@@ -5,6 +5,9 @@
     },
     {
       "intent": "PhoneNumberNearestPlaceIntent"
+    },
+     {
+      "intent": "OpeningHoursNearestPlaceIntent"
     }
   ]
 }

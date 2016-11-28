@@ -1,5 +1,7 @@
 package amazon;
 
+import Answer.Answer;
+
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.LaunchRequest;
@@ -26,9 +28,7 @@ import static googleApi.APIConnector.getCoordinatesFromAddress;
 
 public class HSBCManager {
 
-    private static final String SLOT_CITY = "City";
     private static int RADIUS_MAX = 10000;
-
 
     public SpeechletResponse getOnLaunchResponse(LaunchRequest request, Session session) {
         String speechText;

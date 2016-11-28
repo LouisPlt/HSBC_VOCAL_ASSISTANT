@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Util {
 	
 	public static int DEFAULT_RADIUS = 1000;
-	public static String[] DAYS = {"Lundi", "Mardi" ,"Mecredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"};
+	public static String[] DAYS = {"Monday", "Tuesday" ,"Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
 
 	// d(a,b) = sqrt((xb - xa)^2 + (yb - ya)^2)

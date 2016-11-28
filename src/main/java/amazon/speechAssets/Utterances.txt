@@ -21,3 +21,7 @@ PhoneNumberNearestPlaceIntent give the number of the nearest agency
 PhoneNumberNearestPlaceIntent find the number of the nearest agency 
 PhoneNumberNearestPlaceIntent give the number of the closest agency
 PhoneNumberNearestPlaceIntent find the number of the closest agency 
+
+
+OpeningHoursNearestPlaceIntent TODO 
+
