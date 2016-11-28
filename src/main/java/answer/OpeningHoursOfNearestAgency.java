@@ -1,4 +1,4 @@
-package Answer;
+package answer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ public class OpeningHoursOfNearestAgency implements Answer {
 
 	@Override
 	public String getTextResponse(Place place) {
+		place.findOpeningHours();
 		List<List<String>> similarDays = getSimilarOpeningHoursDays(place);
     	StringBuilder response = new StringBuilder("The agency is open ");
     	

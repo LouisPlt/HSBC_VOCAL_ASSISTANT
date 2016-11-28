@@ -1,26 +1,21 @@
 package amazon;
 
-import Answer.Answer;
+import static googleApi.APIConnector.getCoordinatesFromAddress;
 
-import com.amazon.speech.slu.Intent;
-import com.amazon.speech.speechlet.IntentRequest;
-import com.amazon.speech.speechlet.LaunchRequest;
-import com.amazon.speech.speechlet.Session;
-import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.PlainTextOutputSpeech;
-import com.amazon.speech.ui.SimpleCard;
-
-import googleApi.APIConnector;
-import googleApi.Place;
-import googleApi.Point;
-import googleApi.Util;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONException;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import static googleApi.APIConnector.getCoordinatesFromAddress;
+import answer.Answer;
+import answer.DayOpeningHoursOfNearestAgency;
+import googleApi.Place;
+import googleApi.Point;
+import googleApi.Util;
 
 /**
  * Created by louis on 05/11/16.
@@ -28,8 +23,8 @@ import static googleApi.APIConnector.getCoordinatesFromAddress;
 
 public class HSBCManager {
 
-    private static int RADIUS_MAX = 10000;
-
+	private static final String SLOT_DATE = "Date";
+			
     public SpeechletResponse getOnLaunchResponse(LaunchRequest request, Session session) {
         String speechText;
 
@@ -37,29 +32,40 @@ public class HSBCManager {
         return getTellSpeechletResponse(speechText);
     }
     
-    public SpeechletResponse getAddressNearestGenericIntentResponse(IntentRequest request, Session session, Answer answer) throws IOException, JSONException {
+    public SpeechletResponse getNearestPlaceGenericIntentResponse(IntentRequest request, Session session, Answer answer) throws IOException, JSONException {
     	
-        // Get the address input
         Intent intent = request.getIntent();
 
         // TODO : To be replaced with the location of alexa
         Point coordinates = getCoordinatesFromAddress("Paris");
 
-        // Get the list of all places near the coordinates
-        // While there is no result new request with a larger radius is send
-        ArrayList<Place> places ;
-        int radius = Util.DEFAULT_RADIUS;
-        do {
-            places = APIConnector.getPlaces(coordinates, radius);
-            radius += 2000;
-        } while (places.size() == 0 && radius < RADIUS_MAX);
+        List<Place> places = Util.getAllPlacesNear(coordinates);
 
         if(places.size() != 0 ){
-            // Find the nearest place
             Place nearestPlace = Util.findNearestPlace(coordinates, places);
-
-            // Return the address of the nearest place
             String responseText = answer.getTextResponse(nearestPlace);
+            return getTellSpeechletResponse(responseText);
+        }
+        else {
+            return nothingFoundResponse();
+        }
+    }
+    
+    public SpeechletResponse getDayOpeningHoursNearestPlaceIntentResponse(IntentRequest request, Session session) throws IOException, JSONException {   	
+        
+    	Intent intent = request.getIntent();
+    	String date = intent.getSlot(SLOT_DATE).getValue();
+    	String day = Util.getDayOfTheWeekFromDate(date);
+    	if(day == null){
+    		return nothingFoundResponse();
+    	}
+    	
+        // TODO : To be replaced with the location of alexa
+        Point coordinates = getCoordinatesFromAddress("Paris");
+        List<Place> places = Util.getAllPlacesNear(coordinates);     
+        if(places.size() != 0 ){
+            Place nearestPlace = Util.findNearestPlace(coordinates, places);
+            String responseText = new DayOpeningHoursOfNearestAgency().getTextResponse(nearestPlace, day);
             return getTellSpeechletResponse(responseText);
         }
         else {

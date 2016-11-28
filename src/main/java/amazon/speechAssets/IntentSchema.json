@@ -8,6 +8,15 @@
     },
      {
       "intent": "OpeningHoursNearestPlaceIntent"
+    },
+    {
+      "intent": "DayOpeningHoursNearestPlaceIntent"
+      "slots": [
+        {
+          "name": "Day",
+          "type": "AMAZON.DATE"
+        }
+      ]
     }
   ]
 }

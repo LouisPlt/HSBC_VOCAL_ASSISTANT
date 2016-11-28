@@ -25,3 +25,5 @@ PhoneNumberNearestPlaceIntent find the number of the closest agency
 
 OpeningHoursNearestPlaceIntent TODO 
 
+DayOpeningHoursNearestPlaceIntent TODO {Date}
+

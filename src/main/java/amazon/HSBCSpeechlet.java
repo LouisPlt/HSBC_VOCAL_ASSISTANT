@@ -46,11 +46,13 @@ public class HSBCSpeechlet implements Speechlet {
         try {
             switch (intent.getName()) {
                 case "AddressNearestPlaceIntent":
-                    return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new AddressOfNearestAgency());
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new AddressOfNearestAgency());
                 case "PhoneNumberNearestPlaceIntent":
-                    return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new NumOfNearestAgency());
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new NumOfNearestAgency());
                 case "OpeningHoursNearestPlaceIntent":
-                	return hSBCManager.getAddressNearestGenericIntentResponse(request, session, new OpeningHoursOfNearestAgency());
+                	return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new OpeningHoursOfNearestAgency());
+                case "DayOpeningHoursNearestPlaceIntent":
+                	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request, session);
                 default:
                     return hSBCManager.nothingFoundResponse();
             }
