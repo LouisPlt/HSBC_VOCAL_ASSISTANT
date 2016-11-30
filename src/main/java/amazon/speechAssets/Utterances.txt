@@ -23,7 +23,9 @@ PhoneNumberNearestPlaceIntent give the number of the closest agency
 PhoneNumberNearestPlaceIntent find the number of the closest agency 
 
 
-OpeningHoursNearestPlaceIntent TODO 
+OpeningHoursNearestPlaceIntent TODO
+OpeningHoursNearestPlaceIntent find me the opening hours of the nearest agency
 
-DayOpeningHoursNearestPlaceIntent TODO {Date}
+DayOpeningHoursNearestPlaceIntent TODODO {Date}
+OpeningHoursNearestPlaceIntent find if the nearest agency is open {Date}
 
