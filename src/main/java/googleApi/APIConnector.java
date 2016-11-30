@@ -16,12 +16,11 @@ public final class APIConnector {
     private static String API_KEY;
 
     static {
-    	API_KEY = "AIzaSyCepAcRLqM_yr_o4f7bnXaV5zkErc3XF6o";
-//        try {
-//            API_KEY = Configuration.getAPIKey();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            API_KEY = Configuration.getAPIKey();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws IOException, JSONException {
