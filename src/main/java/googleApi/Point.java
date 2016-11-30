@@ -1,4 +1,4 @@
-package googleAPI;
+package googleApi;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,10 +14,8 @@ public class Point {
 	public Point (JSONObject location) throws JSONException {
 		JSONObject coordinates = location.getJSONObject("geometry").getJSONObject("location");
 
-		this.lat = Double.parseDouble(coordinates.getString("lat"));
-		this.lng = Double.parseDouble(coordinates.getString("lng"));
-
-
+		this.lat = coordinates.getDouble("lat");
+		this.lng = coordinates.getDouble("lng");
 	}
 
 	public double getLat() {

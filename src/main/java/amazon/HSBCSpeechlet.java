@@ -1,10 +1,18 @@
 package amazon;
 
+import Answer.AddressOfNearestAgency;
+import Answer.Answer;
+import Answer.NumOfNearestAgency;
+import Answer.OpeningHoursOfNearestAgency;
+
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
+
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import googleApi.Place;
 
 import java.io.IOException;
 
@@ -35,16 +43,25 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
 
         Intent intent = request.getIntent();
-        switch (intent.getName()){
-            case "AddressNearestPlaceIntent" :
-                try {
-                    return hSBCManager.getAddressNearestPlaceIntentResponse(request, session);
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            default:
-                return hSBCManager.nothingFoundResponse();
+        try {
+            switch (intent.getName()) {
+                case "AddressNearestPlaceIntent":
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new AddressOfNearestAgency());
+                case "PhoneNumberNearestPlaceIntent":
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new NumOfNearestAgency());
+                case "OpeningHoursNearestPlaceIntent":
+                	return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new OpeningHoursOfNearestAgency());
+                case "DayOpeningHoursNearestPlaceIntent":
+                	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request, session);
+                default:
+                    return hSBCManager.nothingFoundResponse();
+            }
+        } catch (IOException | JSONException e){
+            e.printStackTrace();
+            return hSBCManager.nothingFoundResponse();
         }
+
+
     }
 
     public void onSessionEnded(SessionEndedRequest request, Session session) throws SpeechletException {
@@ -53,6 +70,5 @@ public class HSBCSpeechlet implements Speechlet {
 
     private void initializeComponents() {
         hSBCManager = new HSBCManager();
-
     }
 }
