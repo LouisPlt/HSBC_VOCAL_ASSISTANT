@@ -4,6 +4,7 @@
 .metadata
 .project
 .classpath
+.settings
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -12,6 +13,7 @@
 *.jar
 *.war
 *.ear
+*.properties
 *.iml
 
 /target
