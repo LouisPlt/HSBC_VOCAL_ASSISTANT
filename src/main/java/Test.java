@@ -11,15 +11,17 @@ import googleApi.Util;
 
 public class Test {
 
+	/*
+	 * TODO : Replace it with UT!
+	 */
 	public static void main(String[] args) throws IOException, JSONException {
       List<Place> places = APIConnector.getPlaces(APIConnector.getCoordinatesFromAddress("Paris"), Util.DEFAULT_RADIUS);
       Place place = places.get(0);
-  	//place.findPhoneNumber();
-// 	place.findOpeningHours();
+//		place.findPhoneNumber();
+// 		place.findOpeningHours();
 //  	System.out.println(place.getCoordinate());
 //  	System.out.println(place.getPhoneNumber());
 //  	
-//  	// TODO : create UT!
 //  	// get and test similar days (based on their opening hours) :
 //  	List<List<String>> similarDays = getSimilarOpeningHoursDays(place);
 //  	for(List<String> days : similarDays){
@@ -30,7 +32,7 @@ public class Test {
 //  		System.out.println();
 //  	}
 //  	
-//  	// test openingHours :
+//  	// testing openingHoursOfNearestAgency :
 //  	StringBuilder result = new StringBuilder("The agency is open ");
 //  	
 //  	for(List<String> days : similarDays){	
@@ -64,27 +66,29 @@ public class Test {
 //  	}
 //  	result.delete(result.length() - 2, result.length() - 1);
 //  	System.out.println(result);
-	place.findOpeningHours();
-  	String date = "2016-11-25";
-  	String day = Util.getDayOfTheWeekFromDate(date);
-  	System.out.println(day);
-  	List<String> hours = place.getOpeningHours().get(day);
-  	StringBuilder response = new StringBuilder("The agency is open ");
-  	response.append(day);
-  	response.append(" from ");
-  	for(int i = 0; i < hours.size(); i++){
-		if(i%2 == 1){
-			response.append(" to ");
-		} else if(i != 0){
-			response.append(" then from ");
-		}
-		response.append(hours.get(i).substring(0,2));
-		if(!hours.get(i).substring(2).equals("00")){
-			response.append(" ");
-			response.append(hours.get(i).substring(2));
-		}
-	}
-  	System.out.println(response);
+      
+    // testing DayOpeningHoursOfNearestAgency
+//	place.findOpeningHours();
+//  	String date = "2016-11-25";
+//  	String day = Util.getDayOfTheWeekFromDate(date);
+//  	System.out.println(day);
+//  	List<String> hours = place.getOpeningHours().get(day);
+//  	StringBuilder response = new StringBuilder("The agency is open ");
+//  	response.append(day);
+//  	response.append(" from ");
+//  	for(int i = 0; i < hours.size(); i++){
+//		if(i%2 == 1){
+//			response.append(" to ");
+//		} else if(i != 0){
+//			response.append(" then from ");
+//		}
+//		response.append(hours.get(i).substring(0,2));
+//		if(!hours.get(i).substring(2).equals("00")){
+//			response.append(" ");
+//			response.append(hours.get(i).substring(2));
+//		}
+//	}
+//  	System.out.println(response);
   	
   }
   
