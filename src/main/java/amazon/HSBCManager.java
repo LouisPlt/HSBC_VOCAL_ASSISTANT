@@ -9,6 +9,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import com.amazon.speech.slu.Intent;
+import com.amazon.speech.speechlet.IntentRequest;
+import com.amazon.speech.speechlet.LaunchRequest;
+import com.amazon.speech.speechlet.Session;
+import com.amazon.speech.speechlet.SpeechletResponse;
+import com.amazon.speech.ui.PlainTextOutputSpeech;
+import com.amazon.speech.ui.SimpleCard;
 import org.json.JSONException;
 
 import answer.Answer;

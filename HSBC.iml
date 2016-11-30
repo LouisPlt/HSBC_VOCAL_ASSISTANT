@@ -67,14 +67,9 @@
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.6" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.3.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.3.2" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.9.6" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20070829" level="project" />
-    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4-1200-jdbc41" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.github.dblock.waffle:waffle-jna:1.7" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.dev.jna:jna:4.1.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.java.dev.jna:jna-platform:4.1.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.guava:guava:18.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-simple:1.7.7" level="project" />
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1212.jre7" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.5" level="project" />
   </component>
 </module>

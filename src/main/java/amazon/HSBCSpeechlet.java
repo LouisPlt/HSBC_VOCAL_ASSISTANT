@@ -1,9 +1,9 @@
 package amazon;
 
-import Answer.AddressOfNearestAgency;
-import Answer.Answer;
-import Answer.NumOfNearestAgency;
-import Answer.OpeningHoursOfNearestAgency;
+import answer.AddressOfNearestAgency;
+import answer.Answer;
+import answer.NumOfNearestAgency;
+import answer.OpeningHoursOfNearestAgency;
 
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
