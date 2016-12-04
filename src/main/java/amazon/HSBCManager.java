@@ -19,6 +19,8 @@ import com.amazon.speech.ui.SimpleCard;
 import org.json.JSONException;
 
 import answer.Answer;
+import answer.AnswerNearestPlace;
+import answer.BankBalance;
 import answer.DayOpeningHoursOfNearestAgency;
 import googleApi.Place;
 import googleApi.Point;
@@ -39,9 +41,7 @@ public class HSBCManager {
         return getTellSpeechletResponse(speechText);
     }
     
-    public SpeechletResponse getNearestPlaceGenericIntentResponse(IntentRequest request, Session session, Answer answer) throws IOException, JSONException {
-    	
-        Intent intent = request.getIntent();
+    public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerNearestPlace answer) throws IOException, JSONException {   	
 
         // TODO : To be replaced with the location of alexa
         Point coordinates = getCoordinatesFromAddress("Paris");
@@ -58,7 +58,7 @@ public class HSBCManager {
         }
     }
     
-    public SpeechletResponse getDayOpeningHoursNearestPlaceIntentResponse(IntentRequest request, Session session) throws IOException, JSONException {   	
+    public SpeechletResponse getDayOpeningHoursNearestPlaceIntentResponse(IntentRequest request) throws IOException, JSONException {   	
         
     	Intent intent = request.getIntent();
     	String date = intent.getSlot(SLOT_DATE).getValue();
@@ -96,4 +96,13 @@ public class HSBCManager {
 
         return SpeechletResponse.newTellResponse(speech, card);
     }
+
+	public SpeechletResponse getGenericIntentResponse(Answer answer) {
+		try {
+			String responseText = answer.getTextResponse();
+			return getTellSpeechletResponse(responseText);
+		}catch (Exception e){
+			return nothingFoundResponse();
+		}
+	}
 }

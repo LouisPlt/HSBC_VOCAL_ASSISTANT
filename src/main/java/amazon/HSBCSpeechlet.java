@@ -2,6 +2,7 @@ package amazon;
 
 import answer.AddressOfNearestAgency;
 import answer.Answer;
+import answer.BankBalance;
 import answer.NumOfNearestAgency;
 import answer.OpeningHoursOfNearestAgency;
 
@@ -46,13 +47,15 @@ public class HSBCSpeechlet implements Speechlet {
         try {
             switch (intent.getName()) {
                 case "AddressNearestPlaceIntent":
-                    return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new AddressOfNearestAgency());
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(new AddressOfNearestAgency());
                 case "PhoneNumberNearestPlaceIntent":
-                    return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new NumOfNearestAgency());
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(new NumOfNearestAgency());
                 case "OpeningHoursNearestPlaceIntent":
-                	return hSBCManager.getNearestPlaceGenericIntentResponse(request, session, new OpeningHoursOfNearestAgency());
+                	return hSBCManager.getNearestPlaceGenericIntentResponse(new OpeningHoursOfNearestAgency());
                 case "DayOpeningHoursNearestPlaceIntent":
-                	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request, session);
+                	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request);
+                case "GetBalanceIntent":
+                	return hSBCManager.getGenericIntentResponse(new BankBalance());
                 default:
                     return hSBCManager.nothingFoundResponse();
             }

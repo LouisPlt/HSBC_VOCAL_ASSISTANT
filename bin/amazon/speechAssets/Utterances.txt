@@ -1,12 +1,12 @@
 AddressNearestPlaceIntent find me the nearest agency 
 AddressNearestPlaceIntent give me the nearest agency 
-AddressNearestPlaceIntent is there an agency near to me?
+AddressNearestPlaceIntent is there an agency near to me
 AddressNearestPlaceIntent give the address of the nearest agency
 AddressNearestPlaceIntent find the address of the nearest agency
 
 AddressNearestPlaceIntent find me the closest agency 
 AddressNearestPlaceIntent give me the closest agency 
-AddressNearestPlaceIntent is there an agency close to me?
+AddressNearestPlaceIntent is there an agency close to me
 AddressNearestPlaceIntent give the address of the closest agency
 AddressNearestPlaceIntent find the address of the closest agency 
 
@@ -23,9 +23,14 @@ PhoneNumberNearestPlaceIntent give the number of the closest agency
 PhoneNumberNearestPlaceIntent find the number of the closest agency 
 
 
-OpeningHoursNearestPlaceIntent TODO
+OpeningHoursNearestPlaceIntent TODO1
 OpeningHoursNearestPlaceIntent find me the opening hours of the nearest agency
 
-DayOpeningHoursNearestPlaceIntent TODODO {Date}
-OpeningHoursNearestPlaceIntent find if the nearest agency is open {Date}
+DayOpeningHoursNearestPlaceIntent TODO2 {Date}
+DayOpeningHoursNearestPlaceIntent find if the nearest agency is open {Date}
+
+OpeningHoursNearestPlaceIntent TODO3
+GetBalanceIntent give me my bank balance
+GetBalanceIntent what is my bank balance
+GetBalanceIntent what my bank balance is
 

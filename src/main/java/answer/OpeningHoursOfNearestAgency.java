@@ -5,7 +5,7 @@ import java.util.List;
 
 import googleApi.Place;
 
-public class OpeningHoursOfNearestAgency implements Answer {
+public class OpeningHoursOfNearestAgency implements AnswerNearestPlace {
 
 	@Override
 	public String getTextResponse(Place place) {

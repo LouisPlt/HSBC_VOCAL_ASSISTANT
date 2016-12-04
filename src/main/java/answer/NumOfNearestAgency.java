@@ -2,7 +2,7 @@ package answer;
 
 import googleApi.Place;
 
-public class NumOfNearestAgency implements Answer {
+public class NumOfNearestAgency implements AnswerNearestPlace {
 	
 	@Override
 	public String getTextResponse(Place place) {

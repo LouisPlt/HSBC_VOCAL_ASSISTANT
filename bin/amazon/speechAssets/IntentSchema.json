@@ -10,13 +10,16 @@
       "intent": "OpeningHoursNearestPlaceIntent"
     },
     {
-      "intent": "DayOpeningHoursNearestPlaceIntent"
+      "intent": "DayOpeningHoursNearestPlaceIntent",
       "slots": [
         {
-          "name": "Day",
+          "name": "Date",
           "type": "AMAZON.DATE"
         }
       ]
+    }  
+    {
+      "intent": "GetBalanceIntent"
     }
   ]
 }
