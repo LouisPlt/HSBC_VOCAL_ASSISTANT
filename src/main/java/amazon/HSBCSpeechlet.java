@@ -57,6 +57,8 @@ public class HSBCSpeechlet implements Speechlet {
                 	return hSBCManager.getGenericIntentResponse(new MaxBankOverdraft());
                 case "GetBankCeilingIntent":
                 	return hSBCManager.getGenericIntentResponse(new BankCeiling());
+                case "GetAdvisorInfoIntent":
+                    return hSBCManager.getGenericIntentResponse(new BankAdvisor());
                 default:
                     return hSBCManager.nothingFoundResponse();
             }

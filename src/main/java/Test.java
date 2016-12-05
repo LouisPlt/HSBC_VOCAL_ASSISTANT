@@ -1,8 +1,13 @@
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import config.DatabaseConnector;
 import org.json.JSONException;
 
 import googleApi.APIConnector;
@@ -14,9 +19,17 @@ public class Test {
 	/*
 	 * TODO : Replace it with UT!
 	 */
-	public static void main(String[] args) throws IOException, JSONException {
-      List<Place> places = APIConnector.getPlaces(APIConnector.getCoordinatesFromAddress("Paris"), Util.DEFAULT_RADIUS);
-      Place place = places.get(0);
+	public static void main(String[] args) throws IOException, JSONException, SQLException {
+        Connection connection = DatabaseConnector.getConnection();
+        Statement stat = connection.createStatement();
+        ResultSet result = stat.executeQuery("SELECT a.overdraft_value_max\n" +
+                "FROM accounts a\n" +
+                "JOIN clients c ON a.client_id = c.id\n" +
+                "WHERE c.id = 10");
+        result.next();
+		System.out.println( "Your maximum allowed overdraft is "+ result.getString("overdraft_value_max")+" euros");
+	}
+      //Place place = places.get(0);
 //		place.findPhoneNumber();
 // 		place.findOpeningHours();
 //  	System.out.println(place.getCoordinate());
@@ -90,7 +103,7 @@ public class Test {
 //	}
 //  	System.out.println(response);
   	
-  }
+ // }
   
   public static List<List<String>> getSimilarOpeningHoursDays(Place place){
   	List<List<String>> similarDays = new ArrayList<>(); 

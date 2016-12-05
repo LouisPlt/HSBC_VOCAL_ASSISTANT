@@ -1,5 +1,7 @@
 package answer;
 
+import java.sql.SQLException;
+
 public interface Answer {
-		public String getTextResponse();
+		public String getTextResponse() throws SQLException;
 }

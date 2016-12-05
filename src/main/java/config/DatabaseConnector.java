@@ -35,7 +35,6 @@ public class DatabaseConnector {
 
 
         try {
-            System.out.println("alol");
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
