@@ -18,7 +18,7 @@ public class MaxBankOverdraft implements Answer{
                 "JOIN clients c ON a.client_id = c.id\n" +
                 "WHERE c.id = 10");
         result.next();
-        return "Your maximum overdraft is "+ result.getString("overdraft_value_max");
+        return "Your maximum overdraft is "+ result.getString("overdraft_value_max")+" euros";
 
 	}
 }
