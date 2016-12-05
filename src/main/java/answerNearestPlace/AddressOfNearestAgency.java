@@ -1,4 +1,4 @@
-package answer;
+package answerNearestPlace;
 
 import googleApi.Place;
 

@@ -1,13 +1,10 @@
 package amazon;
 
-import answer.AddressOfNearestAgency;
-import answer.Answer;
-import answer.BankBalance;
-import answer.NumOfNearestAgency;
-import answer.OpeningHoursOfNearestAgency;
-
+import answerNearestPlace.*;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
+
+import answer.*;
 
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -56,6 +53,10 @@ public class HSBCSpeechlet implements Speechlet {
                 	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request);
                 case "GetBalanceIntent":
                 	return hSBCManager.getGenericIntentResponse(new BankBalance());
+                case "GetMaxOverdraftIntent":
+                	return hSBCManager.getGenericIntentResponse(new MaxBankOverdraft());
+                case "GetBankCeilingIntent":
+                	return hSBCManager.getGenericIntentResponse(new BankCeiling());
                 default:
                     return hSBCManager.nothingFoundResponse();
             }

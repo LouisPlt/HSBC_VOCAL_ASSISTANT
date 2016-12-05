@@ -23,14 +23,31 @@ PhoneNumberNearestPlaceIntent give the number of the closest agency
 PhoneNumberNearestPlaceIntent find the number of the closest agency 
 
 
-OpeningHoursNearestPlaceIntent TODO1
+OpeningHoursNearestPlaceIntent TODO 1
 OpeningHoursNearestPlaceIntent find me the opening hours of the nearest agency
 
 DayOpeningHoursNearestPlaceIntent TODO2 {Date}
 DayOpeningHoursNearestPlaceIntent find if the nearest agency is open {Date}
 
-OpeningHoursNearestPlaceIntent TODO3
+OpeningHoursNearestPlaceIntent TODO 3
 GetBalanceIntent give me my bank balance
 GetBalanceIntent what is my bank balance
 GetBalanceIntent what my bank balance is
+
+GetMaxOverdraftIntent TODO 4
+GetMaxOverdraftIntent what is my authorized overdraft
+GetMaxOverdraftIntent what is my authorized bank overdraft
+GetMaxOverdraftIntent what is my maximum overdraft
+GetMaxOverdraftIntent what is my maximum bank overdraft
+
+GetBankCeilingIntent TODO 5
+GetBankCeilingIntent what is my bank ceiling
+GetBankCeilingIntent how much money can i have on my account
+
+GetAdvisorInfoIntent TODO 6
+GetAdvisorInfoIntent who is my bank advisor
+GetAdvisorInfoIntent who my bank advisor is
+GetAdvisorInfoIntent who is my advisor
+GetAdvisorInfoIntent what is the phone number of my advisor
+GetAdvisorInfoIntent what is the number of my advisor
 

@@ -3,12 +3,11 @@ package amazon;
 import static googleApi.APIConnector.getCoordinatesFromAddress;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
+
+import answerNearestPlace.AnswerNearestPlace;
+import answerNearestPlace.DayOpeningHoursOfNearestAgency;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.LaunchRequest;
@@ -16,12 +15,11 @@ import com.amazon.speech.speechlet.Session;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
-import org.json.JSONException;
 
 import answer.Answer;
-import answer.AnswerNearestPlace;
-import answer.BankBalance;
-import answer.DayOpeningHoursOfNearestAgency;
+
+import org.json.JSONException;
+
 import googleApi.Place;
 import googleApi.Point;
 import googleApi.Util;
@@ -41,7 +39,7 @@ public class HSBCManager {
         return getTellSpeechletResponse(speechText);
     }
     
-    public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerNearestPlace answer) throws IOException, JSONException {   	
+    public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerNearestPlace answer) throws IOException, JSONException {
 
         // TODO : To be replaced with the location of alexa
         Point coordinates = getCoordinatesFromAddress("Paris");

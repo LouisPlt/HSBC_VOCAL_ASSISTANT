@@ -17,9 +17,15 @@
           "type": "AMAZON.DATE"
         }
       ]
-    }  
+    },  
     {
       "intent": "GetBalanceIntent"
+    },
+    {
+      "intent": "GetMaxOverdraftIntent"
+    },
+    {
+      "intent": "GetBankCeilingIntent"
     }
   ]
 }
