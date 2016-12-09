@@ -1,6 +1,5 @@
 package amazon;
 
-import com.amazon.speech.Sdk;
 import com.amazon.speech.speechlet.Speechlet;
 import com.amazon.speech.speechlet.lambda.SpeechletRequestStreamHandler;
 import config.Configuration;

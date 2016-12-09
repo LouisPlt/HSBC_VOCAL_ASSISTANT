@@ -10,6 +10,8 @@ AddressNearestPlaceIntent is there an agency close to me
 AddressNearestPlaceIntent give the address of the closest agency
 AddressNearestPlaceIntent find the address of the closest agency 
 
+
+
 PhoneNumberNearestPlaceIntent give the phone number of the nearest agency
 PhoneNumberNearestPlaceIntent find the phone number of the nearest agency 
 PhoneNumberNearestPlaceIntent give the phone number of the closest agency
@@ -21,33 +23,14 @@ PhoneNumberNearestPlaceIntent give the number of the closest agency
 PhoneNumberNearestPlaceIntent find the number of the closest agency 
 
 
-OpeningHoursNearestPlaceIntent when is open the nearest agency
-OpeningHoursNearestPlaceIntent when is open the agency
-OpeningHoursNearestPlaceIntent give me the opening hours of the agency
-OpeningHoursNearestPlaceIntent give me the opening hours of the nearest agency
+OpeningHoursNearestPlaceIntent TODO1
 OpeningHoursNearestPlaceIntent find me the opening hours of the nearest agency
 
-DayOpeningHoursNearestPlaceIntent is the agency open {Date}
-DayOpeningHoursNearestPlaceIntent can I visit the nearest agency {Date}
-DayOpeningHoursNearestPlaceIntent is the nearest agency open {Date}
+DayOpeningHoursNearestPlaceIntent TODO2 {Date}
 DayOpeningHoursNearestPlaceIntent find if the nearest agency is open {Date}
 
+OpeningHoursNearestPlaceIntent TODO3
 GetBalanceIntent give me my bank balance
-GetBalanceIntent how much do I have on my account
 GetBalanceIntent what is my bank balance
 GetBalanceIntent what my bank balance is
-
-
-GetMaxOverdraftIntent what is my authorized overdraft
-GetMaxOverdraftIntent what is my authorized bank overdraft
-GetMaxOverdraftIntent what is my maximum overdraft
-GetMaxOverdraftIntent what is my maximum bank overdraft
-
-GetBankCeilingIntent how much money can I put on my bank account
-GetBankCeilingIntent what is my bank ceiling
-GetBankCeilingIntent how much money can i have on my account
-
-GetAdvisorInfoIntent who is my bank advisor
-GetAdvisorInfoIntent who my bank advisor is
-GetAdvisorInfoIntent who is my advisor
 

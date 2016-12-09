@@ -1,10 +1,16 @@
 package amazon;
 
+import answerNearestPlace.*;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
+
+import answer.*;
+
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import googleApi.Place;
 
 import java.io.IOException;
 
@@ -35,16 +41,33 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
 
         Intent intent = request.getIntent();
-        switch (intent.getName()){
-            case "AddressNearestPlaceIntent" :
-                try {
-                    return hSBCManager.getAddressNearestPlaceIntentResponse(request, session);
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-            default:
-                return hSBCManager.nothingFoundResponse();
+        try {
+            switch (intent.getName()) {
+                case "AddressNearestPlaceIntent":
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(new AddressOfNearestAgency());
+                case "PhoneNumberNearestPlaceIntent":
+                    return hSBCManager.getNearestPlaceGenericIntentResponse(new NumOfNearestAgency());
+                case "OpeningHoursNearestPlaceIntent":
+                	return hSBCManager.getNearestPlaceGenericIntentResponse(new OpeningHoursOfNearestAgency());
+                case "DayOpeningHoursNearestPlaceIntent":
+                	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request);
+                case "GetBalanceIntent":
+                	return hSBCManager.getGenericIntentResponse(new BankBalance());
+                case "GetMaxOverdraftIntent":
+                	return hSBCManager.getGenericIntentResponse(new MaxBankOverdraft());
+                case "GetBankCeilingIntent":
+                	return hSBCManager.getGenericIntentResponse(new BankCeiling());
+                case "GetAdvisorInfoIntent":
+                    return hSBCManager.getGenericIntentResponse(new BankAdvisor());
+                default:
+                    return hSBCManager.nothingFoundResponse();
+            }
+        } catch (IOException | JSONException e){
+            e.printStackTrace();
+            return hSBCManager.nothingFoundResponse();
         }
+
+
     }
 
     public void onSessionEnded(SessionEndedRequest request, Session session) throws SpeechletException {
@@ -53,6 +76,5 @@ public class HSBCSpeechlet implements Speechlet {
 
     private void initializeComponents() {
         hSBCManager = new HSBCManager();
-
     }
 }

@@ -18,10 +18,15 @@ public class Configuration {
     private static Properties prop;
 
      static {
-         //InputStream resourceAsStream = Configuration.class.getResourceAsStream("/config.properties");
          prop = new Properties();
          try {
-             prop.load(new FileInputStream("config.properties"));
+             File file = new File("config.properties");
+
+             // For local test
+             if (!file.exists()) {
+                 file = new File("src/main/resources/config.properties");
+             }
+             prop.load(new FileInputStream(file));
          } catch (IOException e) {
              e.printStackTrace();
          }
@@ -39,4 +44,26 @@ public class Configuration {
         return  prop.getProperty("appid");
 
     }
+
+    public static String getDBname() throws IOException {
+        return  prop.getProperty("db");
+    }
+    public static String getDBhost() throws IOException {
+        return  prop.getProperty("host");
+    }
+
+    public static String getDBport() throws IOException {
+        return  prop.getProperty("port");
+    }
+
+    public static String getDBuser() throws IOException {
+        return  prop.getProperty("user");
+    }
+    public static String getDBpassword() throws IOException {
+        return  prop.getProperty("password");
+    }
+
+
+
+
 }
