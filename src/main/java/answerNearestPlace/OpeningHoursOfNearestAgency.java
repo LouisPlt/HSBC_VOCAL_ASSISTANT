@@ -3,7 +3,7 @@ package answerNearestPlace;
 import java.util.ArrayList;
 import java.util.List;
 
-import googleApi.Place;
+import models.Place;
 
 public class OpeningHoursOfNearestAgency implements AnswerNearestPlace {
 

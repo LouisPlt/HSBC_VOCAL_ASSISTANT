@@ -51,3 +51,11 @@ GetAdvisorInfoIntent who is my bank advisor
 GetAdvisorInfoIntent who my bank advisor is
 GetAdvisorInfoIntent who is my advisor
 
+LoginIntent my id is {loginpone} {loginptwo}
+LoginIntent my user code is {loginpone} {loginptwo}
+LoginIntent my code is {loginpone} {loginptwo}
+LoginIntent my login is {loginpone} {loginptwo}
+
+PasswordIntent my password is {password}
+PasswordIntent {password}
+

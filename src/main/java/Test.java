@@ -10,9 +10,9 @@ import java.util.List;
 import config.DatabaseConnector;
 import org.json.JSONException;
 
+import application.Util;
 import googleApi.APIConnector;
-import googleApi.Place;
-import googleApi.Util;
+import models.Place;
 
 public class Test {
 

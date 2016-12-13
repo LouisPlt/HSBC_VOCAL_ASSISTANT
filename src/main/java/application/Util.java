@@ -1,4 +1,4 @@
-package googleApi;
+package application;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONException;
+
+import googleApi.APIConnector;
+import models.Place;
+import models.Point;
 
 public class Util {
 	
@@ -24,6 +28,7 @@ public class Util {
 		double b = p2.getLng() - p1.getLng();
 		return Math.sqrt(a*a + b*b);
 	}
+	
 	
 	public static Place findNearestPlace(Point location, List<Place> places) throws JSONException {
 		Place closestPlace = places.get(0);

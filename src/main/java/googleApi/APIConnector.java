@@ -1,6 +1,8 @@
 package googleApi;
 
 import config.*;
+import models.Place;
+import models.Point;
 
 import org.json.JSONArray;
 import org.json.JSONException;

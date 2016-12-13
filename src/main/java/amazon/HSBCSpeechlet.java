@@ -1,6 +1,8 @@
 package amazon;
 
 import answerNearestPlace.*;
+import models.Place;
+
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
 
@@ -10,9 +12,8 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import googleApi.Place;
-
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 /**
@@ -59,12 +60,16 @@ public class HSBCSpeechlet implements Speechlet {
                 	return hSBCManager.getGenericIntentResponse(new BankCeiling());
                 case "GetAdvisorInfoIntent":
                     return hSBCManager.getGenericIntentResponse(new BankAdvisor());
+                case "LoginIntent" :
+                	return hSBCManager.getLoginIntentResponse(request, session);
+                case "PasswordIntent" :
+                	return hSBCManager.getPasswordIntentResponse(request, session);
+                	
                 default:
                     return hSBCManager.nothingFoundResponse();
             }
-        } catch (IOException | JSONException e){
-            e.printStackTrace();
-            return hSBCManager.nothingFoundResponse();
+        } catch (IOException | JSONException | SQLException e){
+            return hSBCManager.getTellSpeechletResponse(e.toString());
         }
 
 

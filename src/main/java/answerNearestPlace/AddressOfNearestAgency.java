@@ -1,6 +1,6 @@
 package answerNearestPlace;
 
-import googleApi.Place;
+import models.Place;
 
 public class AddressOfNearestAgency implements AnswerNearestPlace {
 	

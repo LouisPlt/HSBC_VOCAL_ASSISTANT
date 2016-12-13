@@ -2,7 +2,7 @@ package answerNearestPlace;
 
 import java.util.List;
 
-import googleApi.Place;
+import models.Place;
 
 public class DayOpeningHoursOfNearestAgency {
 
