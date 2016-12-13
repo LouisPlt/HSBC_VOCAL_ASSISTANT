@@ -1,19 +1,23 @@
 package amazon;
 
-import answerNearestPlace.*;
-import models.Place;
-
+import answer.BankAdvisor;
+import answer.BankBalance;
+import answer.BankCeiling;
+import answer.MaxBankOverdraft;
+import answerNearestPlace.AddressOfNearestAgency;
+import answerNearestPlace.NumOfNearestAgency;
+import answerNearestPlace.OpeningHoursOfNearestAgency;
+import application.Util;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
-
-import answer.*;
-
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -23,6 +27,7 @@ public class HSBCSpeechlet implements Speechlet {
 
     private static final Logger log = LoggerFactory.getLogger(HSBCSpeechlet.class);
     private HSBCManager hSBCManager;
+    private static final List<String> PRIVATE_QUESTIONS = Arrays.asList("GetBalanceIntent", "GetMaxOverdraftIntent","GetBankCeilingIntent","GetAdvisorInfoIntent");
 
     public void onSessionStarted(SessionStartedRequest request, Session session) throws SpeechletException {
         log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
@@ -42,6 +47,12 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
 
         Intent intent = request.getIntent();
+        if(PRIVATE_QUESTIONS.contains(intent.getName()) && session.getAttribute("sessionStartTime") == null){
+            if( Util.sessionEnded(session)) {
+                return hSBCManager.getAuthentificationIntentResponse(session, request);
+            }
+        }
+
         try {
             switch (intent.getName()) {
                 case "AddressNearestPlaceIntent":

@@ -1,39 +1,27 @@
 package amazon;
 
-import static googleApi.APIConnector.getCoordinatesFromAddress;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import answer.Answer;
 import answerNearestPlace.AnswerNearestPlace;
 import answerNearestPlace.DayOpeningHoursOfNearestAgency;
 import application.Authentification;
 import application.Util;
-import config.DatabaseConnector;
-
 import com.amazon.speech.slu.Intent;
-import com.amazon.speech.slu.Slot;
 import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.LaunchRequest;
 import com.amazon.speech.speechlet.Session;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
-import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
-
-import answer.Answer;
-
-import org.joda.time.DateTime;
-import org.json.JSONException;
-
+import config.DatabaseConnector;
 import models.Place;
 import models.Point;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import static googleApi.APIConnector.getCoordinatesFromAddress;
 
 /**
  * Created by louis on 05/11/16.
@@ -120,8 +108,8 @@ public class HSBCManager {
 	
 	public SpeechletResponse getLoginIntentResponse(IntentRequest request, Session session) throws SQLException{
         String speechText;
-        SpeechletResponse response = null;
-		Intent intent = request.getIntent();        
+        SpeechletResponse response;
+		Intent intent = request.getIntent();
 	    String login = intent.getSlot(SLOT_LOGINPONE).getValue() + intent.getSlot(SLOT_LOGINPTWO).getValue();
 	    
 	    
@@ -145,8 +133,7 @@ public class HSBCManager {
 
 	public SpeechletResponse getPasswordIntentResponse(IntentRequest request, Session session) throws SQLException {
 		String speechText;
-		SpeechletResponse response = null;
-		Intent intent = request.getIntent();        
+		Intent intent = request.getIntent();
 	    String password = intent.getSlot(SLOT_PASSWORD).getValue();
 	    String login = (String) session.getAttribute("login");
     
@@ -157,15 +144,22 @@ public class HSBCManager {
 			session.setAttribute("sessionStartTime", auth.getSessionStartTime());	
 		}else{
 			speechText = auth.getReasonOfFailure(); 
-		}	    
-		response = getTellSpeechletResponse(speechText);
+		}
+		SpeechletResponse response = getTellSpeechletResponse(speechText);
 		response.setShouldEndSession(false);
 
         return response;
 	}
-	
-	
 
-	
 
+    public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
+		String speechText = "You need to log in first. What's your login ?";
+		Intent intent = request.getIntent();
+
+		SpeechletResponse response = getTellSpeechletResponse(speechText);
+		response.setShouldEndSession(false);
+		session.setAttribute("intentBeforeAuth", intent.getName());
+
+		return response;
+	}
 }

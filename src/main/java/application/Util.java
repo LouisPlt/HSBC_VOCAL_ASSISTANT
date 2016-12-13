@@ -1,4 +1,12 @@
 package application;
+
+import com.amazon.speech.speechlet.Session;
+import googleApi.APIConnector;
+import models.Place;
+import models.Point;
+import org.joda.time.DateTime;
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -7,12 +15,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
-import org.json.JSONException;
-
-import googleApi.APIConnector;
-import models.Place;
-import models.Point;
 
 public class Util {
 	
@@ -71,6 +73,17 @@ public class Util {
 		}
 	}
 
-	
-	
+	public static boolean sessionEnded(Session session){
+
+		String[] date = session.getAttribute("sessionStartTime").toString().split(".");
+		int year = Integer.parseInt(date[0]),
+				day_of_year = Integer.parseInt(date[1]),
+				seconds_of_day = Integer.parseInt(date[2]);
+		if(year == DateTime.now().getYear() && day_of_year == DateTime.now().getDayOfYear()){
+			if(seconds_of_day + 180 < DateTime.now().getSecondOfDay()){
+				return true;
+			}
+		}
+		return false;
+	}
 }

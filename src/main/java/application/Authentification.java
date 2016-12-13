@@ -1,11 +1,10 @@
 package application;
 
 
-import java.sql.SQLException;
-
+import config.DatabaseConnector;
 import org.joda.time.DateTime;
 
-import config.DatabaseConnector;
+import java.sql.SQLException;
 
 public class Authentification {
 	private String login;
@@ -31,7 +30,7 @@ public class Authentification {
 	   } else
 		   reasonOfFailure = "I need your login first";
 	}
-	
+
 	public String getLogin() {
 		return login;
 	}
