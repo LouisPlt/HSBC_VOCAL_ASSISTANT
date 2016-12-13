@@ -75,15 +75,19 @@ public class Util {
 
 	public static boolean sessionEnded(Session session){
 
-		String[] date = session.getAttribute("sessionStartTime").toString().split(".");
+		String formattedDate = (String) session.getAttribute("sessionStartTime");
+		if(formattedDate == null)
+			return true;
+		System.out.println(formattedDate);
+		String[] date =	formattedDate.split("\\.");
 		int year = Integer.parseInt(date[0]),
 				day_of_year = Integer.parseInt(date[1]),
 				seconds_of_day = Integer.parseInt(date[2]);
 		if(year == DateTime.now().getYear() && day_of_year == DateTime.now().getDayOfYear()){
 			if(seconds_of_day + 180 < DateTime.now().getSecondOfDay()){
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 }

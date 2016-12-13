@@ -47,10 +47,8 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
 
         Intent intent = request.getIntent();
-        if(PRIVATE_QUESTIONS.contains(intent.getName()) && session.getAttribute("sessionStartTime") == null){
-            if( Util.sessionEnded(session)) {
+        if(PRIVATE_QUESTIONS.contains(intent.getName()) && Util.sessionEnded(session)){
                 return hSBCManager.getAuthentificationIntentResponse(session, request);
-            }
         }
 
         try {
@@ -75,7 +73,6 @@ public class HSBCSpeechlet implements Speechlet {
                 	return hSBCManager.getLoginIntentResponse(request, session);
                 case "PasswordIntent" :
                 	return hSBCManager.getPasswordIntentResponse(request, session);
-                	
                 default:
                     return hSBCManager.nothingFoundResponse();
             }
