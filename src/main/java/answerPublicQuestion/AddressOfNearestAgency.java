@@ -1,8 +1,8 @@
-package answerNearestPlace;
+package answerPublicQuestion;
 
 import models.Place;
 
-public class AddressOfNearestAgency implements AnswerNearestPlace {
+public class AddressOfNearestAgency implements AnswerPublicQuestion {
 	
 	@Override
 	public String getTextResponse(Place place) {

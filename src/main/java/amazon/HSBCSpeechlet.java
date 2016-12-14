@@ -1,12 +1,12 @@
 package amazon;
 
-import answer.BankAdvisor;
-import answer.BankBalance;
-import answer.BankCeiling;
-import answer.MaxBankOverdraft;
-import answerNearestPlace.AddressOfNearestAgency;
-import answerNearestPlace.NumOfNearestAgency;
-import answerNearestPlace.OpeningHoursOfNearestAgency;
+import answerPrivateQuestion.BankAdvisor;
+import answerPrivateQuestion.BankBalance;
+import answerPrivateQuestion.BankCeiling;
+import answerPrivateQuestion.MaxBankOverdraft;
+import answerPublicQuestion.AddressOfNearestAgency;
+import answerPublicQuestion.NumOfNearestAgency;
+import answerPublicQuestion.OpeningHoursOfNearestAgency;
 import application.Util;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
@@ -48,7 +48,7 @@ public class HSBCSpeechlet implements Speechlet {
 
         Intent intent = request.getIntent();
 
-        // Authentification if needed
+        // Start authentification if needed
         if(PRIVATE_QUESTIONS.contains(intent.getName()) && Util.sessionEnded(session)){
                 return hSBCManager.getAuthentificationIntentResponse(session, request);
         }
@@ -64,13 +64,13 @@ public class HSBCSpeechlet implements Speechlet {
                 case "DayOpeningHoursNearestPlaceIntent":
                 	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request);
                 case "GetBalanceIntent":
-                	return hSBCManager.getGenericIntentResponse(new BankBalance());
+                	return hSBCManager.getGenericIntentResponse(new BankBalance(), session);
                 case "GetMaxOverdraftIntent":
-                	return hSBCManager.getGenericIntentResponse(new MaxBankOverdraft());
+                	return hSBCManager.getGenericIntentResponse(new MaxBankOverdraft(), session);
                 case "GetBankCeilingIntent":
-                	return hSBCManager.getGenericIntentResponse(new BankCeiling());
+                	return hSBCManager.getGenericIntentResponse(new BankCeiling(), session);
                 case "GetAdvisorInfoIntent":
-                    return hSBCManager.getGenericIntentResponse(new BankAdvisor());
+                    return hSBCManager.getGenericIntentResponse(new BankAdvisor(),session);
                 case "LoginIntent" :
                 	return hSBCManager.getLoginIntentResponse(request, session);
                 case "PasswordIntent" :

@@ -1,8 +1,8 @@
 package amazon;
 
-import answer.*;
-import answerNearestPlace.AnswerNearestPlace;
-import answerNearestPlace.DayOpeningHoursOfNearestAgency;
+import answerPrivateQuestion.*;
+import answerPublicQuestion.AnswerPublicQuestion;
+import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
 import application.Authentification;
 import application.Util;
 import com.amazon.speech.slu.Intent;
@@ -41,7 +41,7 @@ public class HSBCManager {
         return getTellSpeechletResponse(speechText);
     }
     
-    public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerNearestPlace answer) throws IOException, JSONException {
+    public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerPublicQuestion answer) throws IOException, JSONException {
 
         // TODO : To be replaced with the location of alexa
         Point coordinates = getCoordinatesFromAddress("Paris");
@@ -97,15 +97,17 @@ public class HSBCManager {
         return SpeechletResponse.newTellResponse(speech, card);
     }
 
-	public SpeechletResponse getGenericIntentResponse(Answer answer) {
+	public SpeechletResponse getGenericIntentResponse(AnswerPrivateQuestion answer, Session session) {
 
 		try {
-			String responseText = answer.getTextResponse();
+            String clientLogin = (String) session.getAttribute("login");
+			String responseText = answer.getTextResponse(clientLogin);
 			SpeechletResponse response = getTellSpeechletResponse(responseText);
 			response.setShouldEndSession(false);
 			return response;
 		} catch (Exception e){
-			return nothingFoundResponse();
+            System.out.println(e);
+            return nothingFoundResponse();
 		}
 	}
 	
@@ -147,7 +149,7 @@ public class HSBCManager {
 			session.setAttribute("sessionStartTime", auth.getSessionStartTime());
             String intentBeforeAuth = (String) session.getAttribute("intentBeforeAuth");
 			if(intentBeforeAuth != null){
-                return getPrivateQuestionByIntent(intentBeforeAuth);
+                return getPrivateQuestionByIntent(intentBeforeAuth, session);
             }
 
         }else{
@@ -158,16 +160,16 @@ public class HSBCManager {
         return response;
 	}
 
-	public SpeechletResponse getPrivateQuestionByIntent(String intentName){
+	public SpeechletResponse getPrivateQuestionByIntent(String intentName, Session session){
         switch (intentName){
             case "GetBalanceIntent":
-                return getGenericIntentResponse(new BankBalance());
+                return getGenericIntentResponse(new BankBalance(), session);
             case "GetMaxOverdraftIntent":
-                return getGenericIntentResponse(new MaxBankOverdraft());
+                return getGenericIntentResponse(new MaxBankOverdraft(), session);
             case "GetBankCeilingIntent":
-                return getGenericIntentResponse(new BankCeiling());
+                return getGenericIntentResponse(new BankCeiling(), session);
             case "GetAdvisorInfoIntent":
-                return getGenericIntentResponse(new BankAdvisor());
+                return getGenericIntentResponse(new BankAdvisor(), session);
             default:
                 return getTellSpeechletResponse("You're successfully logged in. What can I do for you ?");
         }
