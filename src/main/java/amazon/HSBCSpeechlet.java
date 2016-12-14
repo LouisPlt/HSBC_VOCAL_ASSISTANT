@@ -47,6 +47,8 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
 
         Intent intent = request.getIntent();
+
+        // Authentification if needed
         if(PRIVATE_QUESTIONS.contains(intent.getName()) && Util.sessionEnded(session)){
                 return hSBCManager.getAuthentificationIntentResponse(session, request);
         }
@@ -79,8 +81,6 @@ public class HSBCSpeechlet implements Speechlet {
         } catch (IOException | JSONException | SQLException e){
             return hSBCManager.getTellSpeechletResponse(e.toString());
         }
-
-
     }
 
     public void onSessionEnded(SessionEndedRequest request, Session session) throws SpeechletException {

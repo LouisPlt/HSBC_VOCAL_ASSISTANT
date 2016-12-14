@@ -51,7 +51,7 @@ public class Util {
      *  While there is no result new request with a larger radius is send
 	 */
 	public static List<Place> getAllPlacesNear(Point location) throws IOException, JSONException{
-		List<Place> places = new ArrayList<>();
+		List<Place> places;
 		int radius = Util.DEFAULT_RADIUS;
         do {
             places = APIConnector.getPlaces(location, radius);
@@ -83,8 +83,10 @@ public class Util {
 		int year = Integer.parseInt(date[0]),
 				day_of_year = Integer.parseInt(date[1]),
 				seconds_of_day = Integer.parseInt(date[2]);
+		System.out.println("seconds_of_day = "+seconds_of_day);
+		System.out.println("DateTime.now().getSecondOfDay() = "+DateTime.now().getSecondOfDay());
 		if(year == DateTime.now().getYear() && day_of_year == DateTime.now().getDayOfYear()){
-			if(seconds_of_day + 180 < DateTime.now().getSecondOfDay()){
+			if(seconds_of_day + 180 > DateTime.now().getSecondOfDay()){
 				return false;
 			}
 		}

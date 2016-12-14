@@ -1,6 +1,6 @@
 package amazon;
 
-import answer.Answer;
+import answer.*;
 import answerNearestPlace.AnswerNearestPlace;
 import answerNearestPlace.DayOpeningHoursOfNearestAgency;
 import application.Authentification;
@@ -98,10 +98,13 @@ public class HSBCManager {
     }
 
 	public SpeechletResponse getGenericIntentResponse(Answer answer) {
+
 		try {
 			String responseText = answer.getTextResponse();
-			return getTellSpeechletResponse(responseText);
-		}catch (Exception e){
+			SpeechletResponse response = getTellSpeechletResponse(responseText);
+			response.setShouldEndSession(false);
+			return response;
+		} catch (Exception e){
 			return nothingFoundResponse();
 		}
 	}
@@ -140,16 +143,35 @@ public class HSBCManager {
 	    Authentification auth = new Authentification(login, password);
 	    auth.checkPassword();
 		if(	auth.isSucceeded()){
-			speechText = "You're succefully logged in.";
-			session.setAttribute("sessionStartTime", auth.getSessionStartTime());	
-		}else{
+			speechText = "You're successfully logged in. What can I do for you ?";
+			session.setAttribute("sessionStartTime", auth.getSessionStartTime());
+            String intentBeforeAuth = (String) session.getAttribute("intentBeforeAuth");
+			if(intentBeforeAuth != null){
+                return getPrivateQuestionByIntent(intentBeforeAuth);
+            }
+
+        }else{
 			speechText = auth.getReasonOfFailure(); 
 		}
 		SpeechletResponse response = getTellSpeechletResponse(speechText);
-		response.setShouldEndSession(false);
 
         return response;
 	}
+
+	public SpeechletResponse getPrivateQuestionByIntent(String intentName){
+        switch (intentName){
+            case "GetBalanceIntent":
+                return getGenericIntentResponse(new BankBalance());
+            case "GetMaxOverdraftIntent":
+                return getGenericIntentResponse(new MaxBankOverdraft());
+            case "GetBankCeilingIntent":
+                return getGenericIntentResponse(new BankCeiling());
+            case "GetAdvisorInfoIntent":
+                return getGenericIntentResponse(new BankAdvisor());
+            default:
+                return getTellSpeechletResponse("You're successfully logged in. What can I do for you ?");
+        }
+    }
 
 
     public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
