@@ -1,11 +1,11 @@
-package answerNearestPlace;
+package answerPublicQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import googleApi.Place;
+import models.Place;
 
-public class OpeningHoursOfNearestAgency implements AnswerNearestPlace {
+public class OpeningHoursOfNearestAgency implements AnswerPublicQuestion {
 
 	@Override
 	public String getTextResponse(Place place) {

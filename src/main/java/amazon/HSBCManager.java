@@ -1,13 +1,10 @@
 package amazon;
 
-import static googleApi.APIConnector.getCoordinatesFromAddress;
-
-import java.io.IOException;
-import java.util.List;
-
-
-import answerNearestPlace.AnswerNearestPlace;
-import answerNearestPlace.DayOpeningHoursOfNearestAgency;
+import answerPrivateQuestion.*;
+import answerPublicQuestion.AnswerPublicQuestion;
+import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
+import application.Authentification;
+import application.Util;
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.IntentRequest;
 import com.amazon.speech.speechlet.LaunchRequest;
@@ -15,14 +12,16 @@ import com.amazon.speech.speechlet.Session;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
-
-import answer.Answer;
-
+import config.DatabaseConnector;
+import models.Place;
+import models.Point;
 import org.json.JSONException;
 
-import googleApi.Place;
-import googleApi.Point;
-import googleApi.Util;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import static googleApi.APIConnector.getCoordinatesFromAddress;
 
 /**
  * Created by louis on 05/11/16.
@@ -31,7 +30,10 @@ import googleApi.Util;
 public class HSBCManager {
 
 	private static final String SLOT_DATE = "Date";
-			
+	private static final String SLOT_LOGINPONE = "loginpone";
+	private static final String SLOT_LOGINPTWO = "loginptwo";
+	private static final String SLOT_PASSWORD = "password";
+	
     public SpeechletResponse getOnLaunchResponse(LaunchRequest request, Session session) {
         String speechText;
 
@@ -39,7 +41,7 @@ public class HSBCManager {
         return getTellSpeechletResponse(speechText);
     }
     
-    public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerNearestPlace answer) throws IOException, JSONException {
+    public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerPublicQuestion answer) throws IOException, JSONException {
 
         // TODO : To be replaced with the location of alexa
         Point coordinates = getCoordinatesFromAddress("Paris");
@@ -83,7 +85,7 @@ public class HSBCManager {
         return getTellSpeechletResponse(speechText);
     }
 
-    private SpeechletResponse getTellSpeechletResponse(String speechText) {
+    SpeechletResponse getTellSpeechletResponse(String speechText) {
         SimpleCard card = new SimpleCard();
         card.setTitle("Session");
         card.setContent(speechText);
@@ -95,12 +97,93 @@ public class HSBCManager {
         return SpeechletResponse.newTellResponse(speech, card);
     }
 
-	public SpeechletResponse getGenericIntentResponse(Answer answer) {
+	public SpeechletResponse getGenericIntentResponse(AnswerPrivateQuestion answer, Session session) {
+
 		try {
-			String responseText = answer.getTextResponse();
-			return getTellSpeechletResponse(responseText);
-		}catch (Exception e){
-			return nothingFoundResponse();
+            String clientLogin = (String) session.getAttribute("login");
+			String responseText = answer.getTextResponse(clientLogin);
+			SpeechletResponse response = getTellSpeechletResponse(responseText);
+			response.setShouldEndSession(false);
+			return response;
+		} catch (Exception e){
+            System.out.println(e);
+            return nothingFoundResponse();
 		}
+	}
+	
+	public SpeechletResponse getLoginIntentResponse(IntentRequest request, Session session) throws SQLException{
+        String speechText;
+        SpeechletResponse response;
+		Intent intent = request.getIntent();
+	    String login = intent.getSlot(SLOT_LOGINPONE).getValue() + intent.getSlot(SLOT_LOGINPTWO).getValue();
+	    
+	    
+		
+//		Vérification de la présence de l'user en Database	
+	    String name = DatabaseConnector.getClientName(login);
+	    if(name != null){
+	    	speechText = "Welcome "+ DatabaseConnector.getClientName(login) + ". Please give me your password.";
+	    	response = getTellSpeechletResponse(speechText);
+		    response.setShouldEndSession(false);
+		    session.setAttribute("login", login);
+
+	    }
+	    else{
+	    	speechText = "Your login is incorrect.";
+	    	response = getTellSpeechletResponse(speechText);
+	    }
+	    
+        return response;
+	}
+
+	public SpeechletResponse getPasswordIntentResponse(IntentRequest request, Session session) throws SQLException {
+		String speechText;
+		Intent intent = request.getIntent();
+	    String password = intent.getSlot(SLOT_PASSWORD).getValue();
+	    String login = (String) session.getAttribute("login");
+    
+	    Authentification auth = new Authentification(login, password);
+	    auth.checkPassword();
+		if(	auth.isSucceeded()){
+			speechText = "You're successfully logged in. What can I do for you ?";
+			session.setAttribute("sessionStartTime", auth.getSessionStartTime());
+            String intentBeforeAuth = (String) session.getAttribute("intentBeforeAuth");
+			if(intentBeforeAuth != null){
+                return getPrivateQuestionByIntent(intentBeforeAuth, session);
+            }
+
+        }else{
+			speechText = auth.getReasonOfFailure(); 
+		}
+		SpeechletResponse response = getTellSpeechletResponse(speechText);
+
+        return response;
+	}
+
+	public SpeechletResponse getPrivateQuestionByIntent(String intentName, Session session){
+        switch (intentName){
+            case "GetBalanceIntent":
+                return getGenericIntentResponse(new BankBalance(), session);
+            case "GetMaxOverdraftIntent":
+                return getGenericIntentResponse(new MaxBankOverdraft(), session);
+            case "GetBankCeilingIntent":
+                return getGenericIntentResponse(new BankCeiling(), session);
+            case "GetAdvisorInfoIntent":
+                return getGenericIntentResponse(new BankAdvisor(), session);
+            default:
+                return getTellSpeechletResponse("You're successfully logged in. What can I do for you ?");
+        }
+    }
+
+
+    public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
+		String speechText = "You need to log in first. What's your login ?";
+		Intent intent = request.getIntent();
+
+		SpeechletResponse response = getTellSpeechletResponse(speechText);
+		response.setShouldEndSession(false);
+		session.setAttribute("intentBeforeAuth", intent.getName());
+
+		return response;
 	}
 }
