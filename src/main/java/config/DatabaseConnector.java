@@ -22,11 +22,6 @@ public class DatabaseConnector {
     private static String user;
     private static String password;
 
-
-    public static void main(String[] args) throws SQLException {
-
-    }
-
     static {
         try {
             host = Configuration.getDBhost();

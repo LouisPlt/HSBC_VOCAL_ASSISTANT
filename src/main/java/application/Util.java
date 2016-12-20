@@ -72,6 +72,23 @@ public class Util {
 			return null;
 		}
 	}
+	
+	public static StringBuilder buildResponseFromOpeningHours(StringBuilder response, List<String> hours){
+		for(int i = 0; i < hours.size(); i++){
+			if(i%2 == 1){
+				response.append(" to ");
+			} else if(i != 0){
+				response.append(" then from ");
+			}
+			// display hours (we split 1745 into 17 45)
+			response.append(hours.get(i).substring(0,2));
+			if(!hours.get(i).substring(2).equals("00")){
+				response.append(" ");
+				response.append(hours.get(i).substring(2));
+			}
+		}
+		return response;
+	}
 
 	public static boolean sessionEnded(Session session){
 
