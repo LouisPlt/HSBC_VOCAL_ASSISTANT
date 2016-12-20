@@ -1,7 +1,7 @@
 package application;
 
 import com.amazon.speech.speechlet.Session;
-import googleApi.APIConnector;
+
 import models.Place;
 import models.Point;
 import org.joda.time.DateTime;

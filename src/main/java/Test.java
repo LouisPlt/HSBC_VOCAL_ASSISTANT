@@ -10,8 +10,8 @@ import java.util.List;
 import config.DatabaseConnector;
 import org.json.JSONException;
 
+import application.APIConnector;
 import application.Util;
-import googleApi.APIConnector;
 import models.Place;
 
 public class Test {

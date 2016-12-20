@@ -1,4 +1,4 @@
-package googleApi;
+package application;
 
 import config.*;
 import models.Place;

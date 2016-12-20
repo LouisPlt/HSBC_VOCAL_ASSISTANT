@@ -17,11 +17,11 @@ import models.Place;
 import models.Point;
 import org.json.JSONException;
 
+import static application.APIConnector.getCoordinatesFromAddress;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
-import static googleApi.APIConnector.getCoordinatesFromAddress;
 
 /**
  * Created by louis on 05/11/16.
