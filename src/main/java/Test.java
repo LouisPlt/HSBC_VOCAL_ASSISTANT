@@ -104,32 +104,5 @@ public class Test {
 //  	System.out.println(response);
   	
  // }
-  
-  public static List<List<String>> getSimilarOpeningHoursDays(Place place){
-  	List<List<String>> similarDays = new ArrayList<>(); 
-  	
-  	for(String day : place.getOpeningHours().keySet()){
-  		boolean matchingExistingHours = false;
-  		List<String> hours = place.getOpeningHours().get(day);
-  		
-  		int i = 0;
-  		while(!matchingExistingHours && i < similarDays.size()){
-  			String previousDay = similarDays.get(i).get(0);
-  			if(place.getOpeningHours().get(previousDay).equals(hours)){
-  				matchingExistingHours = true;
-  				List<String> days = similarDays.get(i);
-  				days.add(day);
-  				similarDays.set(i, days);
-  			}
-  			i++;
-  		}    		
-  		// if there is no match :
-  		if(!matchingExistingHours){
-	    		List<String> days = new LinkedList<>();
-	    		days.add(day);
-	    		similarDays.add(days);
-  		}
-  	}
-  	return similarDays;
-  }
+
 }

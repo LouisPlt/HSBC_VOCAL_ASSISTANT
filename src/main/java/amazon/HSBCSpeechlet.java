@@ -29,19 +29,20 @@ public class HSBCSpeechlet implements Speechlet {
     private HSBCManager hSBCManager;
     private static final List<String> PRIVATE_QUESTIONS = Arrays.asList("GetBalanceIntent", "GetMaxOverdraftIntent","GetBankCeilingIntent","GetAdvisorInfoIntent");
 
+    @Override
     public void onSessionStarted(SessionStartedRequest request, Session session) throws SpeechletException {
         log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
         initializeComponents();
-
     }
 
+    @Override
     public SpeechletResponse onLaunch(LaunchRequest request, Session session) throws SpeechletException {
         log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
         initializeComponents();
-
         return hSBCManager.getOnLaunchResponse(request, session);
     }
 
+    @Override
     public SpeechletResponse onIntent(IntentRequest request, Session session) throws SpeechletException {
         log.info("onIntent requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
         initializeComponents();
@@ -83,10 +84,10 @@ public class HSBCSpeechlet implements Speechlet {
         }
     }
 
+    @Override
     public void onSessionEnded(SessionEndedRequest request, Session session) throws SpeechletException {
-
     }
-
+    
     private void initializeComponents() {
         hSBCManager = new HSBCManager();
     }

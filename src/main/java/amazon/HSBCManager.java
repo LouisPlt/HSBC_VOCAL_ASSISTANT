@@ -1,44 +1,35 @@
 package amazon;
 
-import answerPrivateQuestion.*;
-import answerPublicQuestion.AnswerPublicQuestion;
-import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
-import application.Authentification;
-import application.Util;
-import com.amazon.speech.slu.Intent;
-import com.amazon.speech.speechlet.IntentRequest;
-import com.amazon.speech.speechlet.LaunchRequest;
-import com.amazon.speech.speechlet.Session;
-import com.amazon.speech.speechlet.SpeechletResponse;
-import com.amazon.speech.ui.PlainTextOutputSpeech;
-import com.amazon.speech.ui.SimpleCard;
-import config.DatabaseConnector;
-import models.Place;
-import models.Point;
-import org.json.JSONException;
-
 import static application.APIConnector.getCoordinatesFromAddress;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.json.JSONException;
+
+import answerPrivateQuestion.AnswerPrivateQuestion;
+import answerPrivateQuestion.BankAdvisor;
+import answerPrivateQuestion.BankBalance;
+import answerPrivateQuestion.BankCeiling;
+import answerPrivateQuestion.MaxBankOverdraft;
+import answerPublicQuestion.AnswerPublicQuestion;
+import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
+import application.Authentification;
+import application.Slots;
+import application.Util;
+import config.DatabaseConnector;
+import models.Place;
+import models.Point;
+
 /**
  * Created by louis on 05/11/16.
  */
 
 public class HSBCManager {
-
-	private static final String SLOT_DATE = "Date";
-	private static final String SLOT_LOGINPONE = "loginpone";
-	private static final String SLOT_LOGINPTWO = "loginptwo";
-	private static final String SLOT_PASSWORD = "password";
 	
     public SpeechletResponse getOnLaunchResponse(LaunchRequest request, Session session) {
-        String speechText;
-
-        speechText = "HSBC, What can I do for you?";
-        return getTellSpeechletResponse(speechText);
+        return getTellSpeechletResponse("HSBC, What can I do for you?");
     }
     
     public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerPublicQuestion answer) throws IOException, JSONException {
@@ -61,7 +52,7 @@ public class HSBCManager {
     public SpeechletResponse getDayOpeningHoursNearestPlaceIntentResponse(IntentRequest request) throws IOException, JSONException {   	
         
     	Intent intent = request.getIntent();
-    	String date = intent.getSlot(SLOT_DATE).getValue();
+    	String date = intent.getSlot(Slots.SLOT_DATE).getValue();
     	String day = Util.getDayOfTheWeekFromDate(date);
     	if(day == null){
     		return nothingFoundResponse();
@@ -81,8 +72,7 @@ public class HSBCManager {
     }
 
     public SpeechletResponse nothingFoundResponse(){
-        String speechText = "No result matches your request";
-        return getTellSpeechletResponse(speechText);
+        return getTellSpeechletResponse("No result matches your request");
     }
 
     SpeechletResponse getTellSpeechletResponse(String speechText) {
@@ -115,9 +105,7 @@ public class HSBCManager {
         String speechText;
         SpeechletResponse response;
 		Intent intent = request.getIntent();
-	    String login = intent.getSlot(SLOT_LOGINPONE).getValue() + intent.getSlot(SLOT_LOGINPTWO).getValue();
-	    
-	    
+	    String login = intent.getSlot(Slots.SLOT_LOGINPONE).getValue() + intent.getSlot(Slots.SLOT_LOGINPTWO).getValue();	    
 		
 //		Vérification de la présence de l'user en Database	
 	    String name = DatabaseConnector.getClientName(login);
@@ -126,7 +114,6 @@ public class HSBCManager {
 	    	response = getTellSpeechletResponse(speechText);
 		    response.setShouldEndSession(false);
 		    session.setAttribute("login", login);
-
 	    }
 	    else{
 	    	speechText = "Your login is incorrect.";
@@ -139,7 +126,7 @@ public class HSBCManager {
 	public SpeechletResponse getPasswordIntentResponse(IntentRequest request, Session session) throws SQLException {
 		String speechText;
 		Intent intent = request.getIntent();
-	    String password = intent.getSlot(SLOT_PASSWORD).getValue();
+	    String password = intent.getSlot(Slots.SLOT_PASSWORD).getValue();
 	    String login = (String) session.getAttribute("login");
     
 	    Authentification auth = new Authentification(login, password);
@@ -151,7 +138,6 @@ public class HSBCManager {
 			if(intentBeforeAuth != null){
                 return getPrivateQuestionByIntent(intentBeforeAuth, session);
             }
-
         }else{
 			speechText = auth.getReasonOfFailure(); 
 		}
