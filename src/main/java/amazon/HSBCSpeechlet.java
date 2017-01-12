@@ -1,23 +1,22 @@
 package amazon;
 
-import answerPrivateQuestion.BankAdvisor;
-import answerPrivateQuestion.BankBalance;
-import answerPrivateQuestion.BankCeiling;
-import answerPrivateQuestion.MaxBankOverdraft;
-import answerPublicQuestion.AddressOfNearestAgency;
-import answerPublicQuestion.NumOfNearestAgency;
-import answerPublicQuestion.OpeningHoursOfNearestAgency;
-import application.Util;
-import com.amazon.speech.slu.Intent;
-import com.amazon.speech.speechlet.*;
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.amazon.speech.slu.Intent;
+import com.amazon.speech.speechlet.*;
+
+
+import answerPrivateQuestion.*;
+import answerPublicQuestion.*;
+
+import application.Util;
 
 
 /**

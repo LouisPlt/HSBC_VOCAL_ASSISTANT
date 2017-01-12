@@ -8,13 +8,15 @@ import java.util.List;
 
 import org.json.JSONException;
 
-import answerPrivateQuestion.AnswerPrivateQuestion;
-import answerPrivateQuestion.BankAdvisor;
-import answerPrivateQuestion.BankBalance;
-import answerPrivateQuestion.BankCeiling;
-import answerPrivateQuestion.MaxBankOverdraft;
-import answerPublicQuestion.AnswerPublicQuestion;
-import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
+import com.amazon.speech.slu.Intent;
+import com.amazon.speech.speechlet.*;
+
+import com.amazon.speech.ui.PlainTextOutputSpeech;
+import com.amazon.speech.ui.SimpleCard;
+
+import answerPrivateQuestion.*;
+import answerPublicQuestion.*;
+
 import application.Authentification;
 import application.Slots;
 import application.Util;
