@@ -10,7 +10,7 @@ import org.json.JSONException;
 
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
-
+import com.amazon.speech.ui.LinkAccountCard;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
 
@@ -164,7 +164,7 @@ public class HSBCManager {
     }
 
 
-    public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
+    /*public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
 		String speechText = "You need to log in first. What's your login ?";
 		Intent intent = request.getIntent();
 
@@ -173,5 +173,21 @@ public class HSBCManager {
 		session.setAttribute("intentBeforeAuth", intent.getName());
 
 		return response;
+	}*/
+    
+    public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
+		String speechText = "You need to log in first. Check your phone to log in";
+		//Intent intent = request.getIntent();
+
+		SpeechletResponse response = getTellSpeechletResponse(speechText);
+		response.setShouldEndSession(false);
+		//session.setAttribute("intentBeforeAuth", intent.getName());
+		LinkAccountCard card = new LinkAccountCard();
+	    card.setTitle("Log in");
+	     // Create the plain text output.
+	    PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+	    speech.setText(speechText);
+
+	    return SpeechletResponse.newTellResponse(speech, card);
 	}
 }

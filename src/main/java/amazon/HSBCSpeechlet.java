@@ -1,6 +1,7 @@
 package amazon;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ import answerPrivateQuestion.*;
 import answerPublicQuestion.*;
 
 import application.Util;
+import config.DatabaseConnector;
 
 
 /**
@@ -27,12 +29,32 @@ public class HSBCSpeechlet implements Speechlet {
     private static final Logger log = LoggerFactory.getLogger(HSBCSpeechlet.class);
     private HSBCManager hSBCManager;
     private static final List<String> PRIVATE_QUESTIONS = Arrays.asList("GetBalanceIntent", "GetMaxOverdraftIntent","GetBankCeilingIntent","GetAdvisorInfoIntent");
-
+    private static String token;
+    
     @Override
     public void onSessionStarted(SessionStartedRequest request, Session session) throws SpeechletException {
         log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
         initializeComponents();
     }
+    
+    public boolean getTokenFromDB(String token) throws SQLException
+    {
+    	ResultSet result = DatabaseConnector.getConnection().createStatement().executeQuery("SELECT token FROM clients WHERE token = " + token);
+		if(result.next())
+		{
+			return true;
+		} else {
+			return false;
+		}
+    }
+    
+//    public String getInfoClient(String token)
+//    {
+//    	ResultSet result = DatabaseConnector.getConnection().createStatement().executeQuery("SELECT client FROM clients WHERE token = " + token);
+//    	result.next();
+//    	return result.getString("state");
+//    }
+   
 
     @Override
     public SpeechletResponse onLaunch(LaunchRequest request, Session session) throws SpeechletException {
@@ -49,8 +71,18 @@ public class HSBCSpeechlet implements Speechlet {
         Intent intent = request.getIntent();
 
         // Start authentification if needed
-        if(PRIVATE_QUESTIONS.contains(intent.getName()) && Util.sessionEnded(session)){
-                return hSBCManager.getAuthentificationIntentResponse(session, request);
+        if(PRIVATE_QUESTIONS.contains(intent.getName())){
+            token = session.getUser().getAccessToken();
+            try {
+    			if (getTokenFromDB(token)){
+    				System.out.println("Token in DB !");
+    			} else {
+    				// LinkedCard
+    				return hSBCManager.getAuthentificationIntentResponse(session, request);
+    			}
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
         }
 
         try {
