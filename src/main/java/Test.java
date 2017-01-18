@@ -16,7 +16,7 @@ public class Test {
 	 */
 	public static void main(String[] args) throws IOException, JSONException, SQLException {
 		//System.out.println( "Your maximum allowed overdraft is "+ result.getString("overdraft_value_max")+" euros");
-		DatabaseConnector.getConnection().createStatement().executeQuery("UPDATE clients SET token = '0';");
+		DatabaseConnector.getConnection().createStatement().executeQuery("UPDATE clients SET token = '0' ;");
 		
 		System.out.println(new BankBalance().getTextResponse("11445113"));
 		
