@@ -16,7 +16,7 @@ public class BankBalance implements AnswerPrivateQuestion {
 		ResultSet result = stat.executeQuery("SELECT a.balance\n" +
 				"FROM accounts a\n" +
 				"JOIN clients c ON a.client_id = c.id\n" +
-				"WHERE CAST( c.login AS INTEGER) = "+clientLogin);
+				"WHERE CAST( c.login AS INTEGER) = " + clientLogin);
 		result.next();
 		return "You have "+ result.getString("balance") +" euros on your account ";
 	}

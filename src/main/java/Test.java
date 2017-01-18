@@ -3,16 +3,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
-import config.DatabaseConnector;
 import org.json.JSONException;
 
-import application.APIConnector;
-import application.Util;
-import models.Place;
+import answerPrivateQuestion.BankBalance;
+import config.DatabaseConnector;
 
 public class Test {
 
@@ -20,15 +15,14 @@ public class Test {
 	 * TODO : Replace it with UT!
 	 */
 	public static void main(String[] args) throws IOException, JSONException, SQLException {
-        Connection connection = DatabaseConnector.getConnection();
-        Statement stat = connection.createStatement();
-        ResultSet result = stat.executeQuery("SELECT a.overdraft_value_max\n" +
-                "FROM accounts a\n" +
-                "JOIN clients c ON a.client_id = c.id\n" +
-                "WHERE c.id = 10");
-        result.next();
-		System.out.println( "Your maximum allowed overdraft is "+ result.getString("overdraft_value_max")+" euros");
-	}
+		//System.out.println( "Your maximum allowed overdraft is "+ result.getString("overdraft_value_max")+" euros");
+		DatabaseConnector.getConnection().createStatement().executeQuery("UPDATE clients SET token = '0';");
+		
+		System.out.println(new BankBalance().getTextResponse("11445113"));
+		
+		
+		
+}
       //Place place = places.get(0);
 //		place.findPhoneNumber();
 // 		place.findOpeningHours();

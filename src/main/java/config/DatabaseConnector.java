@@ -51,6 +51,32 @@ public class DatabaseConnector {
 
     }
     
+    public static boolean isTokenInDB(String userToken)
+    {
+		try {
+			ResultSet result = stat.executeQuery("SELECT token FROM clients WHERE token='" + userToken + "';");
+			if(result.next())
+			{
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+    }
+    
+    public static ResultSet getInfoFromToken(String userToken)
+    {
+		try {
+			ResultSet result = stat.executeQuery("SELECT * FROM clients WHERE token='" + userToken + "';");
+			result.next();
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
+    
     public static String getClientPassword(String login) throws SQLException{
 		ResultSet result = stat.executeQuery("SELECT password\n" +
 				"FROM clients\n" +

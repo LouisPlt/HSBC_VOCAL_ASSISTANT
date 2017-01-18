@@ -29,7 +29,6 @@ public class HSBCSpeechlet implements Speechlet {
     private static final Logger log = LoggerFactory.getLogger(HSBCSpeechlet.class);
     private HSBCManager hSBCManager;
     private static final List<String> PRIVATE_QUESTIONS = Arrays.asList("GetBalanceIntent", "GetMaxOverdraftIntent","GetBankCeilingIntent","GetAdvisorInfoIntent");
-    private static String token;
     
     @Override
     public void onSessionStarted(SessionStartedRequest request, Session session) throws SpeechletException {
@@ -37,24 +36,7 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
     }
     
-    public boolean getTokenFromDB(String token) throws SQLException
-    {
-    	ResultSet result = DatabaseConnector.getConnection().createStatement().executeQuery("SELECT token FROM clients WHERE token = " + token);
-		if(result.next())
-		{
-			return true;
-		} else {
-			return false;
-		}
-    }
-    
-//    public String getInfoClient(String token)
-//    {
-//    	ResultSet result = DatabaseConnector.getConnection().createStatement().executeQuery("SELECT client FROM clients WHERE token = " + token);
-//    	result.next();
-//    	return result.getString("state");
-//    }
-   
+
 
     @Override
     public SpeechletResponse onLaunch(LaunchRequest request, Session session) throws SpeechletException {
@@ -69,20 +51,14 @@ public class HSBCSpeechlet implements Speechlet {
         initializeComponents();
 
         Intent intent = request.getIntent();
-
+        
         // Start authentification if needed
         if(PRIVATE_QUESTIONS.contains(intent.getName())){
-            token = session.getUser().getAccessToken();
-            try {
-    			if (getTokenFromDB(token)){
-    				System.out.println("Token in DB !");
-    			} else {
-    				// LinkedCard
-    				return hSBCManager.getAuthentificationIntentResponse(session, request);
-    			}
-    		} catch (SQLException e) {
-    			e.printStackTrace();
-    		}
+        	String token = session.getUser().getAccessToken();
+        	// Si le token est invalid on renvoie l'intent pour s'authentifier :
+			if (token == null || token.isEmpty() || !DatabaseConnector.isTokenInDB(token)){
+				return hSBCManager.getAuthentificationIntentResponse(session, request);
+			} 
         }
 
         try {

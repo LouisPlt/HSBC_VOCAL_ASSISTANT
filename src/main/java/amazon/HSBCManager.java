@@ -3,20 +3,28 @@ package amazon;
 import static application.APIConnector.getCoordinatesFromAddress;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.json.JSONException;
 
 import com.amazon.speech.slu.Intent;
-import com.amazon.speech.speechlet.*;
+import com.amazon.speech.speechlet.IntentRequest;
+import com.amazon.speech.speechlet.LaunchRequest;
+import com.amazon.speech.speechlet.Session;
+import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.LinkAccountCard;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
 
-import answerPrivateQuestion.*;
-import answerPublicQuestion.*;
-
+import answerPrivateQuestion.AnswerPrivateQuestion;
+import answerPrivateQuestion.BankAdvisor;
+import answerPrivateQuestion.BankBalance;
+import answerPrivateQuestion.BankCeiling;
+import answerPrivateQuestion.MaxBankOverdraft;
+import answerPublicQuestion.AnswerPublicQuestion;
+import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
 import application.Authentification;
 import application.Slots;
 import application.Util;
@@ -37,9 +45,10 @@ public class HSBCManager {
     public SpeechletResponse getNearestPlaceGenericIntentResponse(AnswerPublicQuestion answer) throws IOException, JSONException {
 
         // TODO : To be replaced with the location of alexa
-        Point coordinates = getCoordinatesFromAddress("Paris");
-
-        List<Place> places = Util.getAllPlacesNear(coordinates);
+        //Point coordinates = getCoordinatesFromAddress("La Defense");
+    	Point coordinates = new Point(48.891370, 2.241579);
+        
+    	List<Place> places = Util.getAllPlacesNear(coordinates);
 
         if(places.size() != 0 ){
             Place nearestPlace = Util.findNearestPlace(coordinates, places);
@@ -88,12 +97,27 @@ public class HSBCManager {
 
         return SpeechletResponse.newTellResponse(speech, card);
     }
-
+// Used with old authentification system 
+//	public SpeechletResponse getGenericIntentResponse(AnswerPrivateQuestion answer, Session session) {
+//
+//		try {
+//            String clientLogin = (String) session.getAttribute("login");
+//			String responseText = answer.getTextResponse(clientLogin);
+//			SpeechletResponse response = getTellSpeechletResponse(responseText);
+//			response.setShouldEndSession(false);
+//			return response;
+//		} catch (Exception e){
+//            System.out.println(e);
+//            return nothingFoundResponse();
+//		}
+//	}
+    
 	public SpeechletResponse getGenericIntentResponse(AnswerPrivateQuestion answer, Session session) {
 
 		try {
-            String clientLogin = (String) session.getAttribute("login");
-			String responseText = answer.getTextResponse(clientLogin);
+		    String token = session.getUser().getAccessToken();
+		    ResultSet result = DatabaseConnector.getInfoFromToken(token);
+			String responseText = answer.getTextResponse(result.getString("login"));
 			SpeechletResponse response = getTellSpeechletResponse(responseText);
 			response.setShouldEndSession(false);
 			return response;
