@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.joda.time.DateTime;
-
 /**
  * Created by louis on 13/11/16.
  */
@@ -80,17 +78,17 @@ public class DatabaseConnector {
     public static String getClientPassword(String login) throws SQLException{
 		ResultSet result = stat.executeQuery("SELECT password\n" +
 				"FROM clients\n" +
-				"WHERE CAST( login AS INTEGER) = "+login);
+				"WHERE CAST( login AS INTEGER) = " + login);
 		result.next();
 		
-		return result.getString("password");
+		return result == null ?  null : result.getString("password");
 		
     }
     
     public static String getClientName(String login) throws SQLException{
 		ResultSet result = stat.executeQuery("SELECT lastname, firstname\n" +
 				"FROM clients\n" +
-				"WHERE CAST( login AS INTEGER) = "+login);
+				"WHERE CAST( login AS INTEGER) = " + login);
 		result.next();
 		return result == null ?  null :  result.getString("firstname") +" "+ result.getString("lastname");
 		
@@ -103,6 +101,7 @@ public class DatabaseConnector {
             e.printStackTrace();
         }
     }
+    
 
     public static Connection getConnection() {
         return connection;

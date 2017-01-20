@@ -7,7 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.IntentRequest;
@@ -19,13 +22,8 @@ import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
 
 import answerPrivateQuestion.AnswerPrivateQuestion;
-import answerPrivateQuestion.BankAdvisor;
-import answerPrivateQuestion.BankBalance;
-import answerPrivateQuestion.BankCeiling;
-import answerPrivateQuestion.MaxBankOverdraft;
 import answerPublicQuestion.AnswerPublicQuestion;
 import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
-import application.Authentification;
 import application.Slots;
 import application.Util;
 import config.DatabaseConnector;
@@ -37,7 +35,8 @@ import models.Point;
  */
 
 public class HSBCManager {
-	
+    private static final Logger log = LoggerFactory.getLogger(HSBCManager.class);
+
     public SpeechletResponse getOnLaunchResponse(LaunchRequest request, Session session) {
         return getTellSpeechletResponse("HSBC, What can I do for you?");
     }
@@ -97,20 +96,6 @@ public class HSBCManager {
 
         return SpeechletResponse.newTellResponse(speech, card);
     }
-// Used with old authentification system 
-//	public SpeechletResponse getGenericIntentResponse(AnswerPrivateQuestion answer, Session session) {
-//
-//		try {
-//            String clientLogin = (String) session.getAttribute("login");
-//			String responseText = answer.getTextResponse(clientLogin);
-//			SpeechletResponse response = getTellSpeechletResponse(responseText);
-//			response.setShouldEndSession(false);
-//			return response;
-//		} catch (Exception e){
-//            System.out.println(e);
-//            return nothingFoundResponse();
-//		}
-//	}
     
 	public SpeechletResponse getGenericIntentResponse(AnswerPrivateQuestion answer, Session session) {
 
@@ -127,91 +112,44 @@ public class HSBCManager {
 		}
 	}
 	
-	public SpeechletResponse getLoginIntentResponse(IntentRequest request, Session session) throws SQLException{
-        String speechText;
-        SpeechletResponse response;
-		Intent intent = request.getIntent();
-	    String login = intent.getSlot(Slots.SLOT_LOGINPONE).getValue() + intent.getSlot(Slots.SLOT_LOGINPTWO).getValue();	    
-		
-//		Vérification de la présence de l'user en Database	
-	    String name = DatabaseConnector.getClientName(login);
-	    if(name != null){
-	    	speechText = "Welcome "+ DatabaseConnector.getClientName(login) + ". Please give me your password.";
-	    	response = getTellSpeechletResponse(speechText);
-		    response.setShouldEndSession(false);
-		    session.setAttribute("login", login);
-	    }
-	    else{
-	    	speechText = "Your login is incorrect.";
-	    	response = getTellSpeechletResponse(speechText);
-	    }
-	    
-        return response;
-	}
-
-	public SpeechletResponse getPasswordIntentResponse(IntentRequest request, Session session) throws SQLException {
+	public SpeechletResponse getPasswordIntentResponse(IntentRequest request, Session session) {
 		String speechText;
 		Intent intent = request.getIntent();
 	    String password = intent.getSlot(Slots.SLOT_PASSWORD).getValue();
-	    String login = (String) session.getAttribute("login");
-    
-	    Authentification auth = new Authentification(login, password);
-	    auth.checkPassword();
-		if(	auth.isSucceeded()){
-			speechText = "You're successfully logged in. What can I do for you ?";
-			session.setAttribute("sessionStartTime", auth.getSessionStartTime());
-            String intentBeforeAuth = (String) session.getAttribute("intentBeforeAuth");
-			if(intentBeforeAuth != null){
-                return getPrivateQuestionByIntent(intentBeforeAuth, session);
-            }
-        }else{
-			speechText = auth.getReasonOfFailure(); 
-		}
-		SpeechletResponse response = getTellSpeechletResponse(speechText);
-
-        return response;
+	    String token = session.getUser().getAccessToken();
+	    try {
+	    	String login = DatabaseConnector.getInfoFromToken(token).getString("login");
+	        
+			if(Util.isPasswordCorrect(login, password)){
+				speechText = "You're successfully logged in. What can I do for you ?";
+				String sessionStartTime = DateTime.now().getYear() + "." + DateTime.now().getDayOfYear() + "." + DateTime.now().getSecondOfDay();
+				session.setAttribute("sessionStartTime", sessionStartTime);
+	        }else{
+				speechText = "Your password is wrong, please try again."; 
+			}
+	    } catch (SQLException e){
+	    	log.error(e.getMessage());
+	    	speechText = "An error occured during the request.";
+	    }
+	    
+		return getTellSpeechletResponse(speechText);
 	}
-
-	public SpeechletResponse getPrivateQuestionByIntent(String intentName, Session session){
-        switch (intentName){
-            case "GetBalanceIntent":
-                return getGenericIntentResponse(new BankBalance(), session);
-            case "GetMaxOverdraftIntent":
-                return getGenericIntentResponse(new MaxBankOverdraft(), session);
-            case "GetBankCeilingIntent":
-                return getGenericIntentResponse(new BankCeiling(), session);
-            case "GetAdvisorInfoIntent":
-                return getGenericIntentResponse(new BankAdvisor(), session);
-            default:
-                return getTellSpeechletResponse("You're successfully logged in. What can I do for you ?");
-        }
-    }
-
-
-    /*public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
-		String speechText = "You need to log in first. What's your login ?";
-		Intent intent = request.getIntent();
-
-		SpeechletResponse response = getTellSpeechletResponse(speechText);
-		response.setShouldEndSession(false);
-		session.setAttribute("intentBeforeAuth", intent.getName());
-
-		return response;
-	}*/
     
-    public SpeechletResponse getAuthentificationIntentResponse(Session session, IntentRequest request) {
-		String speechText = "You need to log in first. Check your phone to log in";
-		//Intent intent = request.getIntent();
-
+    public SpeechletResponse getLinkIntentResponse(IntentRequest request, Session session) {
+		String speechText = "You need to link your HSBC account to your amazon echo first. Please check your phone and click on the link to log in.";
 		SpeechletResponse response = getTellSpeechletResponse(speechText);
 		response.setShouldEndSession(false);
-		//session.setAttribute("intentBeforeAuth", intent.getName());
+		
 		LinkAccountCard card = new LinkAccountCard();
-	    card.setTitle("Log in");
-	     // Create the plain text output.
+	    card.setTitle("Link your HSBC account");
 	    PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 	    speech.setText(speechText);
 
 	    return SpeechletResponse.newTellResponse(speech, card);
+	}
+    
+    public SpeechletResponse getAuthentificationIntentResponse(IntentRequest request, Session session) {
+		String speechText = "You need to log in first : what is your HSBC password?";
+		return getTellSpeechletResponse(speechText);
 	}
 }

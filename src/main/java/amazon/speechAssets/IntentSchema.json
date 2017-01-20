@@ -31,19 +31,6 @@
       "intent": "GetBankCeilingIntent"
     },
     {
-	  "intent" : "LoginIntent",
-	  "slots": [
-        {
-          "name": "loginpone",
-          "type": "AMAZON.FOUR_DIGIT_NUMBER"
-        },
-        {
-          "name": "loginptwo",
-          "type": "AMAZON.FOUR_DIGIT_NUMBER"
-        }
-      ]
-    },
-    {
 	  "intent" : "PasswordIntent",
 	  "slots": [
         {

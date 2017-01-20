@@ -17,7 +17,7 @@ public class BankAdvisor implements AnswerPrivateQuestion {
 				"FROM advisors ad\n" +
 				"JOIN agencies a ON ad.agency_id = a.id\n" +
 				"JOIN clients c ON a.id = c.agency_id\n" +
-				"WHERE CAST( c.login AS INTEGER) = "+clientLogin);
+				"WHERE CAST( c.login AS INTEGER) = " + clientLogin);
 		result.next();
 		return "Your bank advisor is "+ result.getString("lastname") +' ' + result.getString("firstname");
 	}

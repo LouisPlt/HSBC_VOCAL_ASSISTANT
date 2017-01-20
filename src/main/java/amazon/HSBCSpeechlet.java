@@ -1,8 +1,6 @@
 package amazon;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,12 +9,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amazon.speech.slu.Intent;
-import com.amazon.speech.speechlet.*;
+import com.amazon.speech.speechlet.IntentRequest;
+import com.amazon.speech.speechlet.LaunchRequest;
+import com.amazon.speech.speechlet.Session;
+import com.amazon.speech.speechlet.SessionEndedRequest;
+import com.amazon.speech.speechlet.SessionStartedRequest;
+import com.amazon.speech.speechlet.Speechlet;
+import com.amazon.speech.speechlet.SpeechletException;
+import com.amazon.speech.speechlet.SpeechletResponse;
 
-
-import answerPrivateQuestion.*;
-import answerPublicQuestion.*;
-
+import answerPrivateQuestion.BankAdvisor;
+import answerPrivateQuestion.BankBalance;
+import answerPrivateQuestion.BankCeiling;
+import answerPrivateQuestion.MaxBankOverdraft;
+import answerPublicQuestion.AddressOfNearestAgency;
+import answerPublicQuestion.NumOfNearestAgency;
+import answerPublicQuestion.OpeningHoursOfNearestAgency;
 import application.Util;
 import config.DatabaseConnector;
 
@@ -27,7 +35,7 @@ import config.DatabaseConnector;
 public class HSBCSpeechlet implements Speechlet {
 
     private static final Logger log = LoggerFactory.getLogger(HSBCSpeechlet.class);
-    private HSBCManager hSBCManager;
+    private HSBCManager _HSBCManager;
     private static final List<String> PRIVATE_QUESTIONS = Arrays.asList("GetBalanceIntent", "GetMaxOverdraftIntent","GetBankCeilingIntent","GetAdvisorInfoIntent");
     
     @Override
@@ -37,12 +45,11 @@ public class HSBCSpeechlet implements Speechlet {
     }
     
 
-
     @Override
     public SpeechletResponse onLaunch(LaunchRequest request, Session session) throws SpeechletException {
         log.info("onSessionStarted requestId={}, sessionId={}", request.getRequestId(), session.getSessionId());
         initializeComponents();
-        return hSBCManager.getOnLaunchResponse(request, session);
+        return _HSBCManager.getOnLaunchResponse(request, session);
     }
 
     @Override
@@ -57,37 +64,38 @@ public class HSBCSpeechlet implements Speechlet {
         	String token = session.getUser().getAccessToken();
         	// Si le token est invalid on renvoie l'intent pour s'authentifier :
 			if (token == null || token.isEmpty() || !DatabaseConnector.isTokenInDB(token)){
-				return hSBCManager.getAuthentificationIntentResponse(session, request);
-			} 
+				return _HSBCManager.getLinkIntentResponse(request, session);
+			} else if(Util.sessionEnded(session)){
+				return _HSBCManager.getAuthentificationIntentResponse(request, session);
+			}
         }
 
         try {
             switch (intent.getName()) {
                 case "AddressNearestPlaceIntent":
-                    return hSBCManager.getNearestPlaceGenericIntentResponse(new AddressOfNearestAgency());
+                    return _HSBCManager.getNearestPlaceGenericIntentResponse(new AddressOfNearestAgency());
                 case "PhoneNumberNearestPlaceIntent":
-                    return hSBCManager.getNearestPlaceGenericIntentResponse(new NumOfNearestAgency());
+                    return _HSBCManager.getNearestPlaceGenericIntentResponse(new NumOfNearestAgency());
                 case "OpeningHoursNearestPlaceIntent":
-                	return hSBCManager.getNearestPlaceGenericIntentResponse(new OpeningHoursOfNearestAgency());
+                	return _HSBCManager.getNearestPlaceGenericIntentResponse(new OpeningHoursOfNearestAgency());
                 case "DayOpeningHoursNearestPlaceIntent":
-                	return hSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request);
+                	return _HSBCManager.getDayOpeningHoursNearestPlaceIntentResponse(request);
                 case "GetBalanceIntent":
-                	return hSBCManager.getGenericIntentResponse(new BankBalance(), session);
+                	return _HSBCManager.getGenericIntentResponse(new BankBalance(), session);
                 case "GetMaxOverdraftIntent":
-                	return hSBCManager.getGenericIntentResponse(new MaxBankOverdraft(), session);
+                	return _HSBCManager.getGenericIntentResponse(new MaxBankOverdraft(), session);
                 case "GetBankCeilingIntent":
-                	return hSBCManager.getGenericIntentResponse(new BankCeiling(), session);
+                	return _HSBCManager.getGenericIntentResponse(new BankCeiling(), session);
                 case "GetAdvisorInfoIntent":
-                    return hSBCManager.getGenericIntentResponse(new BankAdvisor(),session);
-                case "LoginIntent" :
-                	return hSBCManager.getLoginIntentResponse(request, session);
+                    return _HSBCManager.getGenericIntentResponse(new BankAdvisor(),session);
                 case "PasswordIntent" :
-                	return hSBCManager.getPasswordIntentResponse(request, session);
+                	return _HSBCManager.getPasswordIntentResponse(request, session);
                 default:
-                    return hSBCManager.nothingFoundResponse();
+                    return _HSBCManager.nothingFoundResponse();
             }
-        } catch (IOException | JSONException | SQLException e){
-            return hSBCManager.getTellSpeechletResponse(e.toString());
+        } catch (IOException | JSONException e){
+        	log.error(e.getMessage());
+            return _HSBCManager.getTellSpeechletResponse("An error occured during the request.");
         }
     }
 
@@ -96,6 +104,6 @@ public class HSBCSpeechlet implements Speechlet {
     }
     
     private void initializeComponents() {
-        hSBCManager = new HSBCManager();
+    	_HSBCManager = new HSBCManager();
     }
 }

@@ -20,7 +20,7 @@ public class BankCeiling implements AnswerPrivateQuestion {
                 "FROM accounts a\n" +
                 "JOIN clients c ON a.client_id = c.id\n" +
                 "JOIN account_types at ON a.account_type_id = at.id\n" +
-                "WHERE CAST( c.login AS INTEGER) = "+clientLogin);
+                "WHERE CAST( c.login AS INTEGER) = " + clientLogin);
         result.next();
         return "The ceiling of your "+ result.getString("kind") +" is " + result.getString("celling")+" euros";
     }

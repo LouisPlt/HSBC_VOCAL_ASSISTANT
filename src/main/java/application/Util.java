@@ -1,20 +1,22 @@
 package application;
 
-import com.amazon.speech.speechlet.Session;
-
-import models.Place;
-import models.Point;
-import org.joda.time.DateTime;
-import org.json.JSONException;
-
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import org.joda.time.DateTime;
+import org.json.JSONException;
+
+import com.amazon.speech.speechlet.Session;
+
+import config.DatabaseConnector;
+import models.Place;
+import models.Point;
 
 public class Util {
 	
@@ -109,4 +111,14 @@ public class Util {
 		}
 		return true;
 	}
+	
+	public static boolean isPasswordCorrect(String login, String password) throws SQLException{
+	 	String passwordFromDB = DatabaseConnector.getClientPassword(login);
+	 	System.out.println("Password from DB =" + passwordFromDB);
+		if(passwordFromDB.equals(password)){
+			return true;
+		}
+		return false;
+	}
+	
 }
