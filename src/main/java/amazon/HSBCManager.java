@@ -117,6 +117,7 @@ public class HSBCManager {
 		Intent intent = request.getIntent();
 	    String password = intent.getSlot(Slots.SLOT_PASSWORD).getValue();
 	    String token = session.getUser().getAccessToken();
+	    SpeechletResponse response;
 	    try {
 	    	String login = DatabaseConnector.getInfoFromToken(token).getString("login");
 	        
@@ -125,14 +126,15 @@ public class HSBCManager {
 				String sessionStartTime = DateTime.now().getYear() + "." + DateTime.now().getDayOfYear() + "." + DateTime.now().getSecondOfDay();
 				session.setAttribute("sessionStartTime", sessionStartTime);
 	        }else{
-				speechText = "Your password is wrong, please try again."; 
+				speechText = "Your password is wrong, please try again.";
 			}
 	    } catch (SQLException e){
 	    	log.error(e.getMessage());
 	    	speechText = "An error occured during the request.";
 	    }
-	    
-		return getTellSpeechletResponse(speechText);
+	    response = getTellSpeechletResponse(speechText);
+		response.setShouldEndSession(false);
+		return response;
 	}
     
     public SpeechletResponse getLinkIntentResponse(IntentRequest request, Session session) {
