@@ -1,8 +1,8 @@
-package answerNearestPlace;
+package answerPublicQuestion;
 
-import googleApi.Place;
+import models.Place;
 
-public class NumOfNearestAgency implements AnswerNearestPlace {
+public class NumOfNearestAgency implements AnswerPublicQuestion {
 	
 	@Override
 	public String getTextResponse(Place place) {

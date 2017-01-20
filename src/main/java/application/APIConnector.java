@@ -1,6 +1,8 @@
-package googleApi;
+package application;
 
 import config.*;
+import models.Place;
+import models.Point;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +59,6 @@ public final class APIConnector {
 
     public static JSONObject getJsonFromUrl(URL url) throws IOException, JSONException {
         // read from the URL
-        //System.out.println("Nouvelle requete ? "+ url);
         Scanner scan = new Scanner(url.openStream());
         String str = new String();
         while (scan.hasNext())

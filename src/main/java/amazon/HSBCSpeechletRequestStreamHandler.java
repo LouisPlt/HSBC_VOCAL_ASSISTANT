@@ -24,14 +24,12 @@ public class HSBCSpeechletRequestStreamHandler extends SpeechletRequestStreamHan
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*System.setProperty(Sdk.DISABLE_REQUEST_SIGNATURE_CHECK_SYSTEM_PROPERTY, "true");
+        /*
+        System.setProperty(Sdk.DISABLE_REQUEST_SIGNATURE_CHECK_SYSTEM_PROPERTY, "true");
         System.setProperty(Sdk.SUPPORTED_APPLICATION_IDS_SYSTEM_PROPERTY, "");
-        System.setProperty(Sdk.TIMESTAMP_TOLERANCE_SYSTEM_PROPERTY, "");*/
+        System.setProperty(Sdk.TIMESTAMP_TOLERANCE_SYSTEM_PROPERTY, "");
+        */
     }
-
-
-
-
 
     public HSBCSpeechletRequestStreamHandler(Speechlet speechlet, Set<String> supportedApplicationIds) {
         super(speechlet, supportedApplicationIds);
