@@ -6,7 +6,9 @@ The assistant can answer private or public questions :
 - Public ones: Information about HSBC agencies using the Google API
 - Private ones: We use a postgres database to get information about the client
 
-For the private questions, an authentification process has been set up.
+For the private questions, an authentification process has been set up. 
+We also have created a website used to achieve account linking and you can find the code here : https://github.com/LouisPouillot/HSBC_WEBSITE
+
 ## Setup
 To run this example skill you need to do three things. The first is to deploy the example code in a Amazon Lambda's server, and the second is to configure the Alexa skill to use Lambda.
 You will need a configuration file too for using Google API and the database.
@@ -38,18 +40,22 @@ You will need a configuration file too for using Google API and the database.
 7. You are now able to start testing your sample skill! You should be able to go to the [Echo webpage](http://echo.amazon.com/#skills) and see your skill enabled.
 8. In order to test it, try to say some of the Sample Utterances from the Examples section below.
 9. Your skill is now saved and once you are finished testing you can continue to publish your skill.
+10. In order to used account linking feature you have to go back to the skill configuration tab and Select "Yes" to the Account Linkin checkboxes.
+11. Then you have to fill the Authorization URL field with this url : https://hsbc-node-portal.herokuapp.com/login
+12. The client Id we are using is "hsbc-pfe".
+13. The Authorization Grant Type is Implicit Grant.
+14. You have to specify a Privacy Policy URL which is "https://hsbc-node-portal.herokuapp.com" for now (it's not a real privacy policy url because it's not necessary for a POC).
 
 
 ## Examples
 ### Public question:
 
-    User: "Alexa, ask my bank where is the nearsest agency ?"
-    Alexa: "There is ona at..."
+    User: "Alexa, ask my bank where is the nearsest agency?"
+    Alexa: "There is one agency at..."
     
 ### Private question with authentification
-    User: "Alexa, ask my bank who is my bank advisor"
-    Alexa: "You need to login first. What's your login?"
-    User: "My login is [login]"
-    Alexa: "Welcome [user's name]. What is your password"
+    User: "Alexa, ask my bank who is my bank advisor?"
+    Alexa: "You need to login first. What's your password?"
     User: "[Password]"
-    Alexa: "Your advisor is [advisor's name]"
+    Alexa: "Welcome [user's name]. Your bank advisor is ..."
+    
