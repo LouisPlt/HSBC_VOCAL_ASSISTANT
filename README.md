@@ -44,7 +44,7 @@ You will need a configuration file too for using Google API and the database.
 11. Then you have to fill the Authorization URL field with this url : https://hsbc-node-portal.herokuapp.com/login
 12. The client Id we are using is "hsbc-pfe".
 13. The Authorization Grant Type is Implicit Grant.
-14. You have to specify a Privacy Policy URL which is "https://hsbc-node-portal.herokuapp.com" for now (it's not a real privacy policy url because it's not necessary for a POC).
+14. You have to specify a Privacy Policy URL which is https://hsbc-node-portal.herokuapp.com for now (it's not a real privacy policy url because it's not necessary for a POC).
 
 
 ## Examples
