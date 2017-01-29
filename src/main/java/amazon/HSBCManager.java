@@ -1,7 +1,5 @@
 package amazon;
 
-import static application.APIConnector.getCoordinatesFromAddress;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +20,7 @@ import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.SimpleCard;
 
 import answerPrivateQuestion.AnswerPrivateQuestion;
+import answerPrivateQuestion.LastTransfers;
 import answerPublicQuestion.AnswerPublicQuestion;
 import answerPublicQuestion.DayOpeningHoursOfNearestAgency;
 import application.Slots;
@@ -62,14 +61,16 @@ public class HSBCManager {
     public SpeechletResponse getDayOpeningHoursNearestPlaceIntentResponse(IntentRequest request) throws IOException, JSONException {   	
         
     	Intent intent = request.getIntent();
-    	String date = intent.getSlot(Slots.SLOT_DATE).getValue();
+    	String date = intent.getSlot(Slots.DATE).getValue();
     	String day = Util.getDayOfTheWeekFromDate(date);
     	if(day == null){
     		return nothingFoundResponse();
     	}
     	
-        // TODO : To be replaced with the location of alexa
-        Point coordinates = getCoordinatesFromAddress("Paris");
+    	// TODO : To be replaced with the location of alexa
+        //Point coordinates = getCoordinatesFromAddress("La Defense");
+    	Point coordinates = new Point(48.891370, 2.241579);
+    	
         List<Place> places = Util.getAllPlacesNear(coordinates);     
         if(places.size() != 0 ){
             Place nearestPlace = Util.findNearestPlace(coordinates, places);
@@ -107,7 +108,7 @@ public class HSBCManager {
 			response.setShouldEndSession(false);
 			return response;
 		} catch (Exception e){
-            System.out.println(e);
+            log.error(e.getMessage());
             return nothingFoundResponse();
 		}
 	}
@@ -115,7 +116,7 @@ public class HSBCManager {
 	public SpeechletResponse getPasswordIntentResponse(IntentRequest request, Session session) {
 		String speechText;
 		Intent intent = request.getIntent();
-	    String password = intent.getSlot(Slots.SLOT_PASSWORD).getValue();
+	    String password = intent.getSlot(Slots.PASSWORD).getValue();
 	    String token = session.getUser().getAccessToken();
 	    SpeechletResponse response;
 	    try {
@@ -154,4 +155,50 @@ public class HSBCManager {
 		String speechText = "You need to log in first : what is your HSBC password?";
 		return getTellSpeechletResponse(speechText);
 	}
+    
+    public SpeechletResponse getLastTransfersIntentResponse(IntentRequest request, Session session) {
+		String speechText;
+	    String nbOfTransfersS = request.getIntent().getSlot(Slots.NUMBER).getValue();
+	    int nbOfTransfers = 1;
+	    try {
+		    nbOfTransfers = Integer.parseInt(nbOfTransfersS);
+		    if (nbOfTransfers <= 0){
+		    	nbOfTransfers = 1;
+		    }
+	    } catch(Exception e){
+	    	log.debug(e.getMessage());
+	    }
+	    
+	    String token = session.getUser().getAccessToken();
+	    SpeechletResponse response;
+	    try {
+	    	String login = DatabaseConnector.getInfoFromToken(token).getString("login");
+	    	speechText = LastTransfers.getTextResponse(login, nbOfTransfers);
+	    } catch (Exception e){
+	    	log.error(e.getMessage());
+	    	speechText = "An error occured during the request : " + e.getMessage();
+	    }
+	    response = getTellSpeechletResponse(speechText);
+		response.setShouldEndSession(false);
+		return response;
+	}
+    
+	 public SpeechletResponse getTransfersOfADayIntentResponse(IntentRequest request, Session session) {   	
+		 	String speechText;
+	    	Intent intent = request.getIntent();
+	    	String date = intent.getSlot(Slots.DATE).getValue();
+	    	String token = session.getUser().getAccessToken();
+		    SpeechletResponse response;
+		    try {
+		    	String login = DatabaseConnector.getInfoFromToken(token).getString("login");
+		    	speechText = LastTransfers.getTextResponse(login, date);
+		    } catch (Exception e){
+		    	log.error(e.getMessage());
+		    	speechText = "An error occured during the request.";
+		    }
+		    response = getTellSpeechletResponse(speechText);
+			response.setShouldEndSession(false);
+			return response;
+	 }
+	 
 }

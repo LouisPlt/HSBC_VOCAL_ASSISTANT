@@ -90,6 +90,10 @@ public class HSBCSpeechlet implements Speechlet {
                     return _HSBCManager.getGenericIntentResponse(new BankAdvisor(),session);
                 case "PasswordIntent" :
                 	return _HSBCManager.getPasswordIntentResponse(request, session);
+                case "LastTransfersIntent" :
+                	return _HSBCManager.getLastTransfersIntentResponse(request, session);
+                case "TransfersOfADayIntent" :
+                	return _HSBCManager.getTransfersOfADayIntentResponse(request, session);
                 default:
                     return _HSBCManager.nothingFoundResponse();
             }

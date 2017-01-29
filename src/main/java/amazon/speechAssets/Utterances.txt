@@ -54,3 +54,12 @@ GetAdvisorInfoIntent who is my advisor
 PasswordIntent my password is {password}
 PasswordIntent {password}
 
+LastTransfersIntent what are my {number} last transfers
+LastTransfersIntent what are my {number} last operations
+LastTransfersIntent give me my {number} last transfers
+LastTransfersIntent give me my {number} last operations
+
+TransfersOfADayIntent what are my bank operations on {Date}
+TransfersOfADayIntent what are my tranfers on {Date}
+TransfersOfADayIntent give me my bank operations on {Date}
+TransfersOfADayIntent give me my tranfers on {Date}

@@ -38,6 +38,24 @@
           "type": "AMAZON.FOUR_DIGIT_NUMBER"
         }
       ]
+    },
+    {
+	  "intent" : "LastTransfersIntent",
+	  "slots": [
+        {
+          "name": "number",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
+      "intent": "TransfersOfADayIntent",
+      "slots": [
+        {
+          "name": "Date",
+          "type": "AMAZON.DATE"
+        }
+      ]
     }
   ]
 }

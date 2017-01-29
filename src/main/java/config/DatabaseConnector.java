@@ -82,7 +82,6 @@ public class DatabaseConnector {
 		result.next();
 		
 		return result == null ?  null : result.getString("password");
-		
     }
     
     public static String getClientName(String login) throws SQLException{

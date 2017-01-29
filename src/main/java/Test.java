@@ -1,9 +1,9 @@
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.json.JSONException;
 
-import answerPrivateQuestion.BankBalance;
 import config.DatabaseConnector;
 
 public class Test {
@@ -13,13 +13,62 @@ public class Test {
 	 */
 	public static void main(String[] args) throws IOException, JSONException, SQLException {
 		//System.out.println( "Your maximum allowed overdraft is "+ result.getString("overdraft_value_max")+" euros");
-		DatabaseConnector.getConnection().createStatement().executeQuery("UPDATE clients SET token = '0' ;");
+//		String query = "UPDATE clients SET token = '0' ;";
+//		DatabaseConnector.getConnection().createStatement().executeQuery(query);
 		
-		System.out.println(new BankBalance().getTextResponse("11445113"));
+			String query =  "SELECT t.amount, t.description, a.account_type_id, a.id, t.sender_account_id " +
+					"FROM transfers t " +
+					"JOIN accounts a " +
+					"ON t.sender_account_id = a.id OR t.receiver_account_id = a.id " +
+					"WHERE a.client_id IN (SELECT id FROM clients WHERE CAST(login AS INTEGER) = 17602697)" +
+					"ORDER BY t.date DESC";
+			ResultSet result = DatabaseConnector.getConnection().createStatement().executeQuery(query);
+			
+			try {
+				System.out.println(buildResponse(result, "", 10));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		
-		
-		
+	
+//				
 }
+	private static String buildResponse(ResultSet result, String response, int nbOfTransfers) throws Exception {		
+		int i = 0;
+		while(result.next() && (i < nbOfTransfers) && (i < 10)){	
+			String[] description = result.getString("description").split(" ");
+			String transfertType = description[0];
+		
+			switch(transfertType){
+				case "CB": 
+					response += "Your account has been debited of " + result.getString("amount") + " euros from " +  description[1];
+					break;
+				case "PRLV": 
+					response += "You have been charged " + result.getString("amount") + " euros from " +  description[1];
+					break;
+				case "RETRAIT":
+					response += "You have withdrawn " + result.getString("amount") + " euros";
+					break;
+				case "VIREMENT":
+					if(result.getString("sender_account_id") == result.getString("id")){
+						response += "You have received a transfer of  " + result.getString("amount") + " euros";
+					}
+					else {
+						response += "You have made a transfer of " + result.getString("amount") + " euros";
+					}
+					break;
+				default: 
+					response += "Your account has been charged of " + result.getString("amount") + " euros";
+					break;
+			}
+			i++;
+			response+=". ";
+		}
+		if(i >= 10){
+			response += "If you want to have more than 10 reponses, go check your transfers on the HSBC website.";
+		}
+		return response;
+	}
       //Place place = places.get(0);
 //		place.findPhoneNumber();
 // 		place.findOpeningHours();
