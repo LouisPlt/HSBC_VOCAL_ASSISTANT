@@ -1,4 +1,4 @@
-#A vocal assistant for HSBC banking information build with Amazon Echo
+# A vocal assistant for HSBC banking information build with Amazon Echo
 
 ## Concepts
 This project is a MVP developed by students for HSBC
@@ -6,8 +6,8 @@ The assistant can answer private or public questions :
 - Public ones: Information about HSBC agencies using the Google API
 - Private ones: We use a postgres database to get information about the client
 
-For the private questions, an authentification process has been set up. 
-We also have created a website used to achieve account linking and you can find the code here : https://github.com/LouisPouillot/HSBC_WEBSITE
+For the private questions, an authentification process has been set up.
+We also have created a website used to achieve account linking and you can find the code here : https://github.com/LouisPouillot/HSBC_PORTAL
 
 ## Setup
 To run this example skill you need to do three things. The first is to deploy the example code in a Amazon Lambda's server, and the second is to configure the Alexa skill to use Lambda.
@@ -18,7 +18,7 @@ You will need a configuration file too for using Google API and the database.
 3. Skip the blueprint
 4. Name the Lambda Function "HSBC".
 5. Select the runtime as Java 8
-6. Create a file named config.properties in the folder src/main/resources. This file should be formatted as the example. You have to get an API key from Google and database's credentials. 
+6. Create a file named config.properties in the folder src/main/resources. This file should be formatted as the example. You have to get an API key from Google and database's credentials.
 7. Go to the the root directory containing pom.xml, and run 'mvn assembly:assembly -DdescriptorId=jar-with-dependencies package'. This will generate a zip file named "alexa-skills-kit-samples-1.0-jar-with-dependencies.jar" in the target directory.
 9. Select Code entry type as "Upload a .ZIP file" and then upload the "alexa-skills-kit-samples-1.0-jar-with-dependencies.jar" file from the build directory to Lambda
 9. Set the Handler as amazon.HSBCSpeechletRequestStreamHandler (this refers to the Lambda RequestStreamHandler file in the zip).
@@ -40,22 +40,38 @@ You will need a configuration file too for using Google API and the database.
 7. You are now able to start testing your sample skill! You should be able to go to the [Echo webpage](http://echo.amazon.com/#skills) and see your skill enabled.
 8. In order to test it, try to say some of the Sample Utterances from the Examples section below.
 9. Your skill is now saved and once you are finished testing you can continue to publish your skill.
-10. In order to used account linking feature you have to go back to the skill configuration tab and Select "Yes" to the Account Linkin checkboxes.
-11. Then you have to fill the Authorization URL field with this url : https://hsbc-node-portal.herokuapp.com/login
-12. The client Id we are using is "hsbc-pfe".
-13. The Authorization Grant Type is Implicit Grant.
-14. You have to specify a Privacy Policy URL which is https://hsbc-node-portal.herokuapp.com for now (it's not a real privacy policy url because it's not necessary for a POC).
 
+### Account Linking
+To perform account linking you need to deploy a connexion portal. You can rely on [this repository](https://github.com/LouisPouillot/HSBC_PORTAL)
+
+1. In order to used account linking feature you have to go back to the skill configuration tab and Select "Yes" to the Account Linkin checkboxes.
+2. Then you have to fill the Authorization URL field with this url : https://{name-of-you-app-on-heroku}.herokuapp.com/login (if you have use the previous repository)
+3. The client Id we are using is "hsbc-pfe".
+4. The Authorization Grant Type is Implicit Grant.
+5. You have to specify a Privacy Policy URL which is https://{name-of-you-app-on-heroku}.herokuapp.com for now (it's not a real privacy policy url because it's not necessary for a POC).
+
+### Configuration
+  You need to create a file named 'config.properties' wich looks like this:
+  ```
+  appid= [Your app id]
+  apikey= [GOOGLE API KEY]
+  host= [HOST URL OF YOUR DATABASE]
+  db= [NAME OF YOUR DATABASE]
+  user= [USER OF YOUR DATABASE]
+  port= [PORT OF YOUR DATABASE]
+  password= [PASSWORD OF YOUR DATABASE]
+ ```
+ If you have deploy the database on heroku you can find all this credentials in
+ Ressources > Add-ons Heroku Postgres::Database > View credentiels
 
 ## Examples
 ### Public question:
 
     User: "Alexa, ask my bank where is the nearsest agency?"
     Alexa: "There is one agency at..."
-    
+
 ### Private question with authentification
     User: "Alexa, ask my bank who is my bank advisor?"
     Alexa: "You need to login first. What's your password?"
     User: "[Password]"
     Alexa: "Welcome [user's name]. Your bank advisor is ..."
-    
